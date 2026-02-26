@@ -9,3 +9,5 @@ Test,,,None,None,,#28
 None,,,None,None,None,#29
 None,,,None,None,None,#29
 "This should add the ""How Likely"" column",,,None,None,None,#33
+"This should add the ""How Likely"" column",,,None,None,,#33
+This should be fixed now,,,Fingers crossed...,,,#36
