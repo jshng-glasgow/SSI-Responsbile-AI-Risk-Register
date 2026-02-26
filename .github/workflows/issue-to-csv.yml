@@ -6,7 +6,7 @@ on:
 
 concurrency:
   group: csv-update
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   add-to-register:
