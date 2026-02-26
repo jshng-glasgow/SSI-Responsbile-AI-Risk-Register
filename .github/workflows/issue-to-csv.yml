@@ -12,7 +12,9 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
-
+    concurrency:
+      group: csv-update
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
 
@@ -36,7 +38,4 @@ jobs:
           body: "Automatically generated from issue #${{ github.event.issue.number }}"
           branch: "risk/issue-${{ github.event.issue.number }}"
           labels: "auto-generated"
-          
-    concurrency:
-      group: csv-update
-      cancel-in-progress: false
+
