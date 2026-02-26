@@ -12,14 +12,14 @@ body:
   - type: dropdown
     id: likelihood
     attributes:
-      label: How likely?
+      label: Likelihood
       options: [Low, Medium, High]
     validations:
       required: true
   - type: dropdown
     id: severity
     attributes:
-      label: How serious?
+      label: Severity
       options: [Low, Medium, High]
     validations:
       required: true
