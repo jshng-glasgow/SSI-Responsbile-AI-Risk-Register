@@ -19,12 +19,12 @@ def validate():
         errors.append(f"Missing columns: {missing}")
 
     # Check required fields aren't empty
-    for col in ["Risk", "Likelihood", "Severity"]:
+    for col in ["Risk", "How likely?", "How serious?"]:
         if col in df.columns and df[col].isnull().any():
             errors.append(f"Column '{col}' has empty values")
 
     # Check likelihood and severity are valid
-    for col in ["Likelihood", "Severity"]:
+    for col in ["How likely?", "How serious?"]:
         if col in df.columns:
             invalid = df[~df[col].isin(VALID_LEVELS)][col].unique()
             if len(invalid) > 0:
