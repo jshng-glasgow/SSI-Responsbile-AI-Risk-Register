@@ -8,7 +8,11 @@ os.makedirs("docs", exist_ok=True)
 
 df = pd.read_csv(CSV_PATH)
 # Convert newlines to HTML line breaks
-df = df.apply(lambda col: col.str.replace('\n', '<br>', regex=False))
+try:
+    df = df.apply(lambda col: col.str.replace('\n', '<br>', regex=False))
+except AttributeError:
+    # If there are non-string columns, ignore them
+    pass
 
 #html_table = df.to_html(index=False, classes='risk-table', escape=False)
 
