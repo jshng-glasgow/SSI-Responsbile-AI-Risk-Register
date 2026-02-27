@@ -13,14 +13,14 @@ body:
     id: likelihood
     attributes:
       label: Likelihood
-      options: [Low, Medium, High]
+      options: [Low, Medium, High, Unknown]
     validations:
       required: true
   - type: dropdown
     id: severity
     attributes:
       label: Severity
-      options: [Low, Medium, High]
+      options: [Low, Medium, High, Unknown]
     validations:
       required: true
   - type: textarea

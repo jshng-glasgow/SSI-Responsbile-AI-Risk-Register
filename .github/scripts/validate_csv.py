@@ -2,7 +2,7 @@ import pandas as pd
 import sys
 
 REQUIRED_COLUMNS = ["Risk", "Likelihood", "Severity", "Mitigations", "Ownership", "Examples"]
-VALID_LEVELS = {"Low", "Medium", "High"}
+VALID_LEVELS = {"Low", "Medium", "High", "Unknown"}
 
 def validate():
     errors = []
@@ -28,7 +28,7 @@ def validate():
         if col in df.columns:
             invalid = df[~df[col].isin(VALID_LEVELS)][col].unique()
             if len(invalid) > 0:
-                errors.append(f"Invalid values in '{col}': {invalid}. Must be Low, Medium, or High.")
+                errors.append(f"Invalid values in '{col}': {invalid}. Must be Low, Medium, High, or Unknown.")
 
     if errors:
         print("Validation failed:")
