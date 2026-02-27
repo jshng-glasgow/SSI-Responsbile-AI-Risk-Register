@@ -2,10 +2,22 @@ import csv
 import os
 import re
 import sys
-from update_csv import parse_issue
 
 FIELDS = ["Risk", "Likelihood", "Severity", "Mitigations", "Ownership", "Examples"]
 CSV_PATH = "register/risks.csv"
+
+def parse_issue(body):
+    values = {}
+    sections = body.split("### ")
+    for section in sections:
+        if not section.strip():
+            continue
+        lines = section.strip().split("\n", 1)
+        field = lines[0].strip()
+        content = lines[1].strip() if len(lines) > 1 else ""
+        if field in FIELDS:
+            values[field] = "" if content in ("_No response_", "") else content
+    return values
 
 def append_to_csv(values, issue_number):
     file_exists = os.path.exists(CSV_PATH)
