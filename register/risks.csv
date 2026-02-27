@@ -1,2 +1,3 @@
 Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue
 I have updated the risk,Medium,Low,I'll update this too,And this one.,,#54
+This should automatically add a label,Medium,Low,And when it does,It should automatically create a pull request,,#60
