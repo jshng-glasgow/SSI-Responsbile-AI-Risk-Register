@@ -3,5 +3,6 @@ I have updated the risk,Medium,Low,I'll update this too,And this one.,,#54
 This should automatically add a label,Medium,Low,And when it does,It should automatically create a pull request,,#60
 "Previously, examples were not added to register.",Low,Low,But I think I have fixed it now.,I just had to make it so the parser looked for EOS as well as new lines.,,#62
 "Previously, examples were not added to register.",Low,Low,But I think I have fixed it now.,I just had to make it so the parser looked for EOS as well as new lines.,Fingers crossed this is visible,#62
+Things are getting serious now.,Low,Low,,,,#69
 This is the second,Low,Low,Hope it doesn't break,,,#67
 We'll try making a load of changes at once.,Low,Low,This is the first,,,#65
