@@ -9,7 +9,7 @@ CSV_PATH = "register/risks.csv"
 def parse_issue(body):
     values = {}
     for field in FIELDS:
-        pattern = rf"### {field}\n\n(.*?)\n\n"
+        pattern = rf"### {re.escape(field)}\n\n(.*?)(?:\n\n|\Z)"
         match = re.search(pattern, body, re.DOTALL)
         value = match.group(1).strip() if match else ""
         values[field] = value
