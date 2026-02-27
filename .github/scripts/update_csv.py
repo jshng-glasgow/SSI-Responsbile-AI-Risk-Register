@@ -12,8 +12,6 @@ def parse_issue(body):
         pattern = rf"### {field}\n\n(.*?)\n\n"
         match = re.search(pattern, body, re.DOTALL)
         value = match.group(1).strip() if match else ""
-        if value == "No change":
-            value = "_No response_"
         values[field] = value
     return values
 
