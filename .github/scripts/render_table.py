@@ -57,7 +57,7 @@ html = f"""<!DOCTYPE html>
     <h1>SSI Generative AI Risk Register</h1>
     <p>A community-maintained register of risks associated with the use of AI in Research Software Engineering.
     Contribute via <a href="https://github.com/jshng-glasgow/SSI-Responsible-AI-Risk-Register/">GitHub</a>.</p>
-    {df.to_html(index=False, classes='risk-table', escape=True)}
+    {df.to_html(index=False, classes='risk-table', escape=False)}
 </body>
 </html>"""
 
