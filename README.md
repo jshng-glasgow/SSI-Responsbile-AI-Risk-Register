@@ -23,7 +23,7 @@ If you would like to be recognised as a contributor to the register, please add 
 
 ## The Register
 
-The live register is found in [/register/risks.csv](/register/risks.csv).
+The live register can be viewed [here](https://jshng-glasgow.github.io/SSI-Responsible-AI-Risk-Register/). The data is stored in [/register/risks.csv](/register/risks.csv)
 
 ### Fields
 
