@@ -15,17 +15,18 @@ def parse_issue(body):
         values[field] = value
     return values
 
-def update_csv_row(values, issue_number):
+def update_csv_row(values):
     file_exists = os.path.exists(CSV_PATH)
     # eror if trying to update an issue that doesn't exist in the CSV
     if values["Issue Number"] and not file_exists:
         print(f"Trying to update issue #{values['Issue Number']} but CSV doesn't exist — skipping")
         sys.exit(1)
+    updated_issue = values['Issue Number'].replace('#', '')
     risk_register = pd.read_csv(CSV_PATH)
     # get relevant row from issue number
-    existing_row = risk_register[risk_register["Issue"] == f"#{values['Issue Number']}"]
+    existing_row = risk_register[risk_register["Issue"] == f"#{updated_issue}"]
     if existing_row.empty:
-        print(f"Trying to update issue #{issue_number} but it doesn't exist in CSV — skipping")
+        print(f"Trying to update issue #{updated_issue} but it doesn't exist in CSV — skipping")
         sys.exit(1)
     # update row with new field, skipping any "_no response_" values
     for field in FIELDS[1:]:  # skip issue number field
@@ -45,5 +46,5 @@ if not values.get("Issue Number"):
     print("Could not parse issue number from issue body — skipping")
     sys.exit(1)
 
-update_csv_row(values, issue_number)
-print(f"Updated risk from issue #{issue_number} in register")
+update_csv_row(values)
+print(f"Updated risk from issue {values['Issue Number']} in register")
