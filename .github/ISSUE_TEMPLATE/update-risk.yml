@@ -20,7 +20,7 @@ body:
     attributes:
       label: Likelihood
       options:
-        - None
+        - No changes
         - Low
         - Medium
         - High
@@ -33,7 +33,7 @@ body:
     attributes:
       label: Severity
       options:
-        - None
+        - No changes
         - Low
         - Medium
         - High

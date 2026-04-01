@@ -16,7 +16,7 @@ def parse_issue(body):
         field = lines[0].strip()
         content = lines[1].strip() if len(lines) > 1 else ""
         if field in FIELDS:
-            values[field] = None if content in ("_No response_", "", "None") else content
+            values[field] = None if content in ("_No response_", "", "None", "No changes") else content
     return values
 
 def update_csv_row(values):
