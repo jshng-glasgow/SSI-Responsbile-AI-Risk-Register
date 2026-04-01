@@ -1,2 +1,3 @@
 Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue,Updates
 
+"Over-use of AI might lead to a degredation in software skills for RSE professionals. This could have unintended consequences on code quality, research integrity and critical review capabilities.",Medium,Medium,Ensure software training remains central to RSE development. Ensure relevant skills and experience remain highly valued by employers and institutions. Demonstrate the effectiveness of relevant skills when developing research code with AI.,"RSEs, Institutions, Employers, Managers, Communities.",,#119,#119
