@@ -8,6 +8,11 @@ if __name__ == "__main__":
     os.makedirs("docs", exist_ok=True)
 
     df = pd.read_csv(CSV_PATH)
+    
+    # Convert issue numbers to hyperlinks
+    if 'Issue' in df.columns:
+        df['Issue'] = df['Issue'].apply(lambda x: f'<a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/{x[1:]}" target="_blank">{x}</a>' if pd.notna(x) and x.startswith('#') else x)
+    
     # Convert newlines to HTML line breaks
     try:
         df = df.apply(lambda col: col.str.replace('\n', '<br>', regex=False))
