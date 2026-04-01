@@ -1,5 +1,6 @@
 name: Update an existing risk
 description: Update an existing row in the AI-RSE risk register
+labels: ["risk update"]
 body:
   - type: textarea
     id: issue_number
