@@ -36,6 +36,14 @@ def update_csv_row(values):
     for field in FIELDS[1:]:  # skip issue number field
         if values[field] is not None:
             existing_row[field] = values[field]
+    
+    # Append the update issue number to the Updates column
+    update_issue = f"#{values['Issue Number'][1:]}"  # Remove the # from the issue number
+    current_updates = existing_row['Updates'].iloc[0] if 'Updates' in existing_row.columns else ''
+    if current_updates:
+        existing_row['Updates'] = f"{current_updates}, {update_issue}"
+    else:
+        existing_row['Updates'] = update_issue
 
     # write updated row back to CSV
     risk_register.update(existing_row)

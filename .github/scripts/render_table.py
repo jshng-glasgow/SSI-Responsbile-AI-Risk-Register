@@ -13,6 +13,23 @@ if __name__ == "__main__":
     if 'Issue' in df.columns:
         df['Issue'] = df['Issue'].apply(lambda x: f'<a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/{x[1:]}" target="_blank">{x}</a>' if pd.notna(x) and x.startswith('#') else x)
     
+    # Convert update issue numbers to hyperlinks
+    if 'Updates' in df.columns:
+        def make_update_links(updates_str):
+            if pd.isna(updates_str) or not updates_str:
+                return updates_str
+            issues = [s.strip() for s in updates_str.split(',')]
+            links = []
+            for issue in issues:
+                if issue.startswith('#'):
+                    num = issue[1:]
+                    link = f'<a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/{num}" target="_blank">{issue}</a>'
+                    links.append(link)
+                else:
+                    links.append(issue)
+            return ', '.join(links)
+        df['Updates'] = df['Updates'].apply(make_update_links)
+    
     # Convert newlines to HTML line breaks
     try:
         df = df.apply(lambda col: col.str.replace('\n', '<br>', regex=False))

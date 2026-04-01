@@ -86,6 +86,7 @@ Examples
             assert len(df) == 1
             assert df.iloc[0]["Risk"] == "Test risk"
             assert df.iloc[0]["Issue"] == "#123"
+            assert df.iloc[0]["Updates"] == "#123"
 
     def test_append_to_csv_existing_file(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
@@ -97,7 +98,8 @@ Examples
             "Mitigations": ["Existing mitigations"],
             "Ownership": ["Existing owner"],
             "Examples": ["Existing examples"],
-            "Issue": ["#1"]
+            "Issue": ["#1"],
+            "Updates": ["#1"]
         })
         existing_df.to_csv(str(test_csv), index=False)
         
@@ -116,3 +118,4 @@ Examples
             assert len(df) == 2
             assert df.iloc[1]["Risk"] == "New risk"
             assert df.iloc[1]["Issue"] == "#124"
+            assert df.iloc[1]["Updates"] == "#124"

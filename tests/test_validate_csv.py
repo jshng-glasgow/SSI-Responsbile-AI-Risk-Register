@@ -13,8 +13,8 @@ from validate_csv import validate, REQUIRED_COLUMNS, VALID_LEVELS
 class TestValidateCSV:
     def test_valid_csv(self, tmp_path):
         # Create a valid CSV
-        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue
-"Test risk",High,Medium,"Mitigation text","Owner","Examples","#1"
+        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue,Updates
+"Test risk",High,Medium,"Mitigation text","Owner","Examples","#1","#1"
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -33,8 +33,8 @@ class TestValidateCSV:
             os.chdir(original_cwd)
 
     def test_missing_columns(self, tmp_path):
-        csv_content = """Risk,Likelihood,Mitigations
-"Test risk",High,"Mitigation"
+        csv_content = """Risk,Likelihood,Mitigations,Ownership,Examples,Issue,Updates
+"Test risk",High,"Mitigation","Owner","Examples","#1","#1"
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -53,8 +53,8 @@ class TestValidateCSV:
             os.chdir(original_cwd)
 
     def test_empty_required_field(self, tmp_path):
-        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue
-"",High,Medium,"Mitigation","Owner","Examples","#1"
+        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue,Updates
+"",High,Medium,"Mitigation","Owner","Examples","#1","#1"
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -73,8 +73,8 @@ class TestValidateCSV:
             os.chdir(original_cwd)
 
     def test_invalid_likelihood(self, tmp_path):
-        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue
-"Test risk",Invalid,Medium,"Mitigation","Owner","Examples","#1"
+        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue,Updates
+"Test risk",Invalid,Medium,"Mitigation","Owner","Examples","#1","#1"
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -93,8 +93,8 @@ class TestValidateCSV:
             os.chdir(original_cwd)
 
     def test_invalid_severity(self, tmp_path):
-        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue
-"Test risk",High,Invalid,"Mitigation","Owner","Examples","#1"
+        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue,Updates
+"Test risk",High,Invalid,"Mitigation","Owner","Examples","#1","#1"
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()

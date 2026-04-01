@@ -1,7 +1,7 @@
 import pandas as pd
 import sys
 
-REQUIRED_COLUMNS = ["Risk", "Likelihood", "Severity", "Mitigations", "Ownership", "Examples"]
+REQUIRED_COLUMNS = ["Risk", "Likelihood", "Severity", "Mitigations", "Ownership", "Examples", "Issue", "Updates"]
 VALID_LEVELS = {"Low", "Medium", "High", "Unknown"}
 
 def validate():

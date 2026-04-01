@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSI Generative AI Risk Register</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .high { color: #c0392b; font-weight: bold; }
+        .medium { color: #e67e22; font-weight: bold; }
+        .low { color: #27ae60; font-weight: bold; }
+        .unknown { color: #7f8c8d; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>SSI Generative AI Risk Register</h1>
+    <p>A community-maintained register of risks associated with the use of AI in Research Software Engineering.
+    Contribute via <a href="https://github.com/jshng-glasgow/SSI-Responsible-AI-Risk-Register/">GitHub</a>.</p>
+    <table border="1" class="dataframe risk-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Risk</th>
+      <th>Likelihood</th>
+      <th>Severity</th>
+      <th>Mitigations</th>
+      <th>Ownership</th>
+      <th>Examples</th>
+      <th>Issue</th>
+      <th>Updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LLM-generated code can contain subtle bugs or incorrect logic that is incorporated into research software without adequate review, potentially leading to erroneous results in published research.</td>
+      <td>High</td>
+      <td>High</td>
+      <td>Treat AI-generated code with the same review standards as human-written code. Ensure test coverage includes edge cases that LLMs commonly mishandle. Document where AI tools were used in development.</td>
+      <td>Individual RSEs and researchers, research software teams, institutions providing AI coding tools.</td>
+      <td>The University of Oxford policy on Generative AI in research specifies "generating code" as substantive use of GenAI, and suggest human judgement is required in all substantive interactions. https://www.ox.ac.uk/research/support-researchers/research-practice/policy-generative-ai-research</td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/77" target="_blank">#77</a></td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/77" target="_blank">#77</a></td>
+    </tr>
+    <tr>
+      <td>tHIS IS A RISK</td>
+      <td>High</td>
+      <td>Low</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/96" target="_blank">#96</a></td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/96" target="_blank">#96</a></td>
+    </tr>
+    <tr>
+      <td>Claude is better at coding than me. I pay my rent through my ability to code.</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>Retrain as a plumber.</td>
+      <td>RSEs and Institutions</td>
+      <td>NaN</td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/98" target="_blank">#98</a></td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/98" target="_blank">#98</a></td>
+    </tr>
+    <tr>
+      <td>AI use will cause RSEs to lose important skills in research software practice. This might have catastrophic effects on the future of research software.</td>
+      <td>High</td>
+      <td>High</td>
+      <td>Ensure training and development continue to instill relevant software skills, and that such skills continue to be held in high regard by employers.</td>
+      <td>RSEs, Institutions.</td>
+      <td>NaN</td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/106" target="_blank">#106</a></td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/106" target="_blank">#106</a></td>
+    </tr>
+    <tr>
+      <td>Generative AI uses lots of energy and water resources. Over-use will lead to environmental degradation and ecosystem collapse.</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>Lobby institutions, governments and industry to regulate the use of AI and properly assess environmental impacts.</td>
+      <td>Governments, AI Companies, Institutions.</td>
+      <td>https://www.climateimpact.com/news-insights/insights/carbon-footprint-of-ai/</td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/108" target="_blank">#108</a></td>
+      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/108" target="_blank">#108</a></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

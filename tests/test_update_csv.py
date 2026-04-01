@@ -81,7 +81,8 @@ Examples
             "Mitigations": ["Original mitigations"],
             "Ownership": ["Original owner"],
             "Examples": ["Original examples"],
-            "Issue": ["#123"]
+            "Issue": ["#123"],
+            "Updates": ["#123"]
         })
         existing_df.to_csv(str(test_csv), index=False)
         
@@ -105,6 +106,7 @@ Examples
             assert df.iloc[0]["Mitigations"] == "Original mitigations"  # Unchanged
             assert df.iloc[0]["Ownership"] == "Updated owner"  # Updated
             assert df.iloc[0]["Examples"] == "Original examples"  # Unchanged
+            assert df.iloc[0]["Updates"] == "#123, #123"  # Should append the update issue
 
     def test_update_csv_row_issue_not_found(self, tmp_path):
         test_csv = tmp_path / "risks.csv"

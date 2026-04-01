@@ -22,10 +22,12 @@ def parse_issue(body):
 def append_to_csv(values, issue_number):
     file_exists = os.path.exists(CSV_PATH)
     with open(CSV_PATH, "a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=FIELDS + ["Issue"])
+        fieldnames = FIELDS + ["Issue", "Updates"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         if not file_exists:
             writer.writeheader()
         values["Issue"] = f"#{issue_number}"
+        values["Updates"] = f"#{issue_number}"  # For new risks, Updates starts with the original issue
         writer.writerow(values)
 
 if __name__ == "__main__":
