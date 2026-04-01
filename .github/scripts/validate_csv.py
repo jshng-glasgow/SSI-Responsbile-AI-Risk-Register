@@ -38,4 +38,5 @@ def validate():
     else:
         print(f"CSV valid — {len(df)} risks in register")
 
-validate()
+if __name__ == "__main__":
+    validate()

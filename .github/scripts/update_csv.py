@@ -16,7 +16,7 @@ def parse_issue(body):
         field = lines[0].strip()
         content = lines[1].strip() if len(lines) > 1 else ""
         if field in FIELDS:
-            values[field] = "" if content in ("_No response_", "") else content
+            values[field] = None if content in ("_No response_", "", "None", "No changes") else content
     return values
 
 def update_csv_row(values):
@@ -32,23 +32,24 @@ def update_csv_row(values):
     if existing_row.empty:
         print(f"Trying to update issue #{updated_issue} but it doesn't exist in CSV — skipping")
         sys.exit(1)
-    # update row with new field, skipping any "_no response_" values
+    # update row with new field, skipping any None values
     for field in FIELDS[1:]:  # skip issue number field
-        if values[field] and values[field] != "_No response_":
+        if values[field] is not None:
             existing_row[field] = values[field]
 
     # write updated row back to CSV
     risk_register.update(existing_row)
     risk_register.to_csv(CSV_PATH, index=False)
 
-body = os.environ.get("ISSUE_BODY", "")
-issue_number = os.environ.get("ISSUE_NUMBER", "")
+if __name__ == "__main__":
+    body = os.environ.get("ISSUE_BODY", "")
+    issue_number = os.environ.get("ISSUE_NUMBER", "")
 
-values = parse_issue(body)
+    values = parse_issue(body)
 
-if not values.get("Issue Number"):
-    print("Could not parse issue number from issue body — skipping")
-    sys.exit(1)
+    if not values.get("Issue Number"):
+        print("Could not parse issue number from issue body — skipping")
+        sys.exit(1)
 
-update_csv_row(values)
-print(f"Updated risk from issue {values['Issue Number']} in register")
+    update_csv_row(values)
+    print(f"Updated risk from issue {values['Issue Number']} in register")

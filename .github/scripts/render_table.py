@@ -1,22 +1,23 @@
-import pandas as pd
-import os
+if __name__ == "__main__":
+    import pandas as pd
+    import os
 
-CSV_PATH = "register/risks.csv"
-OUTPUT_PATH = "docs/index.html"
+    CSV_PATH = "register/risks.csv"
+    OUTPUT_PATH = "docs/index.html"
 
-os.makedirs("docs", exist_ok=True)
+    os.makedirs("docs", exist_ok=True)
 
-df = pd.read_csv(CSV_PATH)
-# Convert newlines to HTML line breaks
-try:
-    df = df.apply(lambda col: col.str.replace('\n', '<br>', regex=False))
-except AttributeError:
-    # If there are non-string columns, ignore them
-    pass
+    df = pd.read_csv(CSV_PATH)
+    # Convert newlines to HTML line breaks
+    try:
+        df = df.apply(lambda col: col.str.replace('\n', '<br>', regex=False))
+    except AttributeError:
+        # If there are non-string columns, ignore them
+        pass
 
-#html_table = df.to_html(index=False, classes='risk-table', escape=False)
+    #html_table = df.to_html(index=False, classes='risk-table', escape=False)
 
-html = f"""<!DOCTYPE html>
+    html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -65,7 +66,7 @@ html = f"""<!DOCTYPE html>
 </body>
 </html>"""
 
-with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-    f.write(html)
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        f.write(html)
 
-print(f"Generated {OUTPUT_PATH}")
+    print(f"Generated {OUTPUT_PATH}")
