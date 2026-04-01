@@ -20,7 +20,7 @@ body:
     id: likelihood
     attributes:
       label: Likelihood
-      options: [Low, Medium, High, Unknown]
+      options: [None, Low, Medium, High, Unknown]
       description: How likely is the risk to occur?
     validations:
       required: false
@@ -28,7 +28,7 @@ body:
     id: severity
     attributes:
       label: Severity
-      options: [Low, Medium, High, Unknown]
+      options: [None, Low, Medium, High, Unknown]
       description: If the risk occurs, how severe would the impact be?
     validations:
       required: false

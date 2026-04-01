@@ -28,14 +28,15 @@ def append_to_csv(values, issue_number):
         values["Issue"] = f"#{issue_number}"
         writer.writerow(values)
 
-body = os.environ.get("ISSUE_BODY", "")
-issue_number = os.environ.get("ISSUE_NUMBER", "")
+if __name__ == "__main__":
+    body = os.environ.get("ISSUE_BODY", "")
+    issue_number = os.environ.get("ISSUE_NUMBER", "")
 
-values = parse_issue(body)
+    values = parse_issue(body)
 
-if not values.get("Risk"):
-    print("Could not parse risk from issue body — skipping")
-    sys.exit(1)
+    if not values.get("Risk"):
+        print("Could not parse risk from issue body — skipping")
+        sys.exit(1)
 
-append_to_csv(values, issue_number)
-print(f"Appended risk from issue #{issue_number} to register")
+    append_to_csv(values, issue_number)
+    print(f"Appended risk from issue #{issue_number} to register")
