@@ -19,7 +19,7 @@ def parse_issue(body):
             values[field] = None if content in ("_No response_", "", "None", "No changes") else content
     return values
 
-def update_csv_row(values):
+def update_csv_row(values, issue_number):
     file_exists = os.path.exists(CSV_PATH)
     # eror if trying to update an issue that doesn't exist in the CSV
     if values["Issue Number"] and not file_exists:
@@ -38,7 +38,7 @@ def update_csv_row(values):
             existing_row[field] = values[field]
     
     # Append the update issue number to the Updates column
-    update_issue = f"#{values['Issue Number'][1:]}"  # Remove the # from the issue number
+    update_issue = f"#{issue_number}"  # The current issue number (update request)
     current_updates = existing_row['Updates'].iloc[0] if 'Updates' in existing_row.columns else ''
     if current_updates:
         existing_row['Updates'] = f"{current_updates}, {update_issue}"
@@ -59,5 +59,5 @@ if __name__ == "__main__":
         print("Could not parse issue number from issue body — skipping")
         sys.exit(1)
 
-    update_csv_row(values)
+    update_csv_row(values, issue_number)
     print(f"Updated risk from issue {values['Issue Number']} in register")
