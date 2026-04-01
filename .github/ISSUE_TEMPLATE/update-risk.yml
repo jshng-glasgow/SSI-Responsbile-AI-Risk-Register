@@ -1,6 +1,5 @@
 name: Update an existing risk
 description: Update an existing row in the AI-RSE risk register
-labels: ["risk update"]
 body:
   - type: textarea
     id: issue_number
@@ -20,7 +19,12 @@ body:
     id: likelihood
     attributes:
       label: Likelihood
-      options: [None, Low, Medium, High, Unknown]
+      options:
+        - None
+        - Low
+        - Medium
+        - High
+        - Unknown
       description: How likely is the risk to occur?
     validations:
       required: false
@@ -28,7 +32,12 @@ body:
     id: severity
     attributes:
       label: Severity
-      options: [None, Low, Medium, High, Unknown]
+      options:
+        - None
+        - Low
+        - Medium
+        - High
+        - Unknown
       description: If the risk occurs, how severe would the impact be?
     validations:
       required: false
