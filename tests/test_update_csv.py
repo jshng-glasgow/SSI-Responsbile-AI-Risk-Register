@@ -142,3 +142,83 @@ Examples
             }
             with pytest.raises(SystemExit):
                 update_csv_row(values, "777")
+
+    def test_update_csv_row_nan_column(self, tmp_path):
+        # Test that updating a column containing only NaN values works
+        test_csv = tmp_path / "risks.csv"
+        # Create CSV with NaN values in Examples column
+        existing_df = pd.DataFrame({
+            "Risk": ["Original risk"],
+            "Likelihood": ["Low"],
+            "Severity": ["High"],
+            "Mitigations": ["Original mitigations"],
+            "Ownership": ["Original owner"],
+            "Examples": [None],  # NaN column
+            "Issue": ["#123"],
+            "Updates": ["#123"]
+        })
+        existing_df.to_csv(str(test_csv), index=False)
+        
+        with patch('update_csv.CSV_PATH', str(test_csv)):
+            values = {
+                "Issue Number": "#123",
+                "Risk": None,
+                "Likelihood": None,
+                "Severity": None,
+                "Mitigations": None,
+                "Ownership": None,
+                "Examples": "https://example.com/skills"  # Adding string to NaN column
+            }
+            update_csv_row(values, "999")
+            
+            df = pd.read_csv(str(test_csv))
+            assert len(df) == 1
+            assert df.iloc[0]["Examples"] == "https://example.com/skills"
+            assert df.iloc[0]["Updates"] == "#123, #999"
+
+    def test_updates_column_tracking(self, tmp_path):
+        # Test that the Updates column correctly tracks all update issues
+        test_csv = tmp_path / "risks.csv"
+        # Create initial risk
+        existing_df = pd.DataFrame({
+            "Risk": ["Test risk"],
+            "Likelihood": ["High"],
+            "Severity": ["Medium"],
+            "Mitigations": ["Initial mitigations"],
+            "Ownership": ["Owner"],
+            "Examples": ["Example"],
+            "Issue": ["#50"],
+            "Updates": ["#50"]
+        })
+        existing_df.to_csv(str(test_csv), index=False)
+        
+        with patch('update_csv.CSV_PATH', str(test_csv)):
+            # First update via issue #100
+            values_1 = {
+                "Issue Number": "#50",
+                "Risk": "Test risk updated",
+                "Likelihood": None,
+                "Severity": None,
+                "Mitigations": None,
+                "Ownership": None,
+                "Examples": None
+            }
+            update_csv_row(values_1, "100")
+            
+            # Second update via issue #200
+            values_2 = {
+                "Issue Number": "#50",
+                "Risk": "Test risk updated again",
+                "Likelihood": None,
+                "Severity": None,
+                "Mitigations": None,
+                "Ownership": None,
+                "Examples": None
+            }
+            update_csv_row(values_2, "200")
+            
+            df = pd.read_csv(str(test_csv))
+            assert len(df) == 1
+            # Updates should contain original issue and all update issues
+            assert df.iloc[0]["Updates"] == "#50, #100, #200"
+            assert df.iloc[0]["Risk"] == "Test risk updated again"

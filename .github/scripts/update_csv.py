@@ -27,6 +27,8 @@ def update_csv_row(values, issue_number):
         sys.exit(1)
     updated_issue = values['Issue Number'].replace('#', '')
     risk_register = pd.read_csv(CSV_PATH)
+    # Convert all columns to object type to allow mixed string/NaN values
+    risk_register = risk_register.astype(object)
     # get relevant row from issue number
     row_mask = risk_register["Issue"] == f"#{updated_issue}"
     if not row_mask.any():
