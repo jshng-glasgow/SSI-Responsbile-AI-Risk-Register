@@ -28,25 +28,28 @@ def update_csv_row(values, issue_number):
     updated_issue = values['Issue Number'].replace('#', '')
     risk_register = pd.read_csv(CSV_PATH)
     # get relevant row from issue number
-    existing_row = risk_register[risk_register["Issue"] == f"#{updated_issue}"]
-    if existing_row.empty:
+    row_mask = risk_register["Issue"] == f"#{updated_issue}"
+    if not row_mask.any():
         print(f"Trying to update issue #{updated_issue} but it doesn't exist in CSV — skipping")
         sys.exit(1)
+    
+    # Get the index of the row to update
+    row_index = risk_register[row_mask].index[0]
+    
     # update row with new field, skipping any None values
     for field in FIELDS[1:]:  # skip issue number field
         if values[field] is not None:
-            existing_row[field] = values[field]
+            risk_register.loc[row_index, field] = values[field]
     
     # Append the update issue number to the Updates column
     update_issue = f"#{issue_number}"  # The current issue number (update request)
-    current_updates = existing_row['Updates'].iloc[0] if 'Updates' in existing_row.columns else ''
-    if current_updates:
-        existing_row['Updates'] = f"{current_updates}, {update_issue}"
+    current_updates = risk_register.loc[row_index, 'Updates'] if 'Updates' in risk_register.columns else ''
+    if pd.notna(current_updates) and current_updates:
+        risk_register.loc[row_index, 'Updates'] = f"{current_updates}, {update_issue}"
     else:
-        existing_row['Updates'] = update_issue
+        risk_register.loc[row_index, 'Updates'] = update_issue
 
     # write updated row back to CSV
-    risk_register.update(existing_row)
     risk_register.to_csv(CSV_PATH, index=False)
 
 if __name__ == "__main__":
