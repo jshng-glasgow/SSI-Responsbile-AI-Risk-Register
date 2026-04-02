@@ -101,7 +101,7 @@ a {
 
 .controls-panel {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 16px;
   margin-top: 24px;
   padding: 18px;
@@ -222,6 +222,12 @@ a {
 .tone-unknown {
   background: rgba(82, 96, 109, 0.12);
   color: #52606d;
+}
+
+.tone-tag {
+  background: rgba(18, 71, 61, 0.1);
+  color: #12473d;
+  border-color: rgba(18, 71, 61, 0.18);
 }
 
 .muted,
