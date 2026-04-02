@@ -5,10 +5,9 @@ from unittest.mock import patch
 import pandas as pd
 import pytest
 
-# Add the scripts directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.github', 'scripts'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".github", "scripts"))
 
-from update_csv import parse_issue, update_csv_row
+from update_csv import combine_tags, parse_issue, update_csv_row
 
 
 class TestUpdateCSV:
@@ -36,6 +35,12 @@ Updated owner
 
 ### Examples
 Updated examples
+
+### Tags
+Economic, Governance
+
+### Other Tags
+Lab Practice
 """
         values = parse_issue(body)
         assert values["Issue Number"] == "#123"
@@ -46,6 +51,7 @@ Updated examples
         assert values["Mitigations"] == "Updated mitigations"
         assert values["Ownership"] == "Updated owner"
         assert values["Examples"] == "Updated examples"
+        assert values["Tags"] == "Economic, Governance, Lab Practice"
 
     def test_parse_issue_none_values(self):
         body = """### Issue Number
@@ -70,6 +76,11 @@ None
 
 ### Examples
 Examples
+
+### Tags
+No changes
+
+### Other Tags
 """
         values = parse_issue(body)
         assert values["Issue Number"] == "#123"
@@ -80,25 +91,31 @@ Examples
         assert values["Mitigations"] is None
         assert values["Ownership"] is None
         assert values["Examples"] == "Examples"
+        assert values["Tags"] is None
+
+    def test_combine_tags_deduplicates(self):
+        assert combine_tags("Economic, Governance", "Governance, Lab Practice") == "Economic, Governance, Lab Practice"
 
     def test_update_csv_row_success(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        existing_df = pd.DataFrame({
-            "Risk": ["Original risk"],
-            "Likelihood": ["Low"],
-            "Severity": ["High"],
-            "Reach": ["Medium"],
-            "Mitigations": ["Original mitigations"],
-            "Ownership": ["Original owner"],
-            "Examples": ["Original examples"],
-            "Tags": ["environmental"],
-            "Issue": ["#123"],
-            "Updates": ["#123"],
-            "Maintainer Notes": [""]
-        })
+        existing_df = pd.DataFrame(
+            {
+                "Risk": ["Original risk"],
+                "Likelihood": ["Low"],
+                "Severity": ["High"],
+                "Reach": ["Medium"],
+                "Mitigations": ["Original mitigations"],
+                "Ownership": ["Original owner"],
+                "Examples": ["Original examples"],
+                "Tags": ["Environmental"],
+                "Issue": ["#123"],
+                "Updates": ["#123"],
+                "Maintainer Notes": [""],
+            }
+        )
         existing_df.to_csv(str(test_csv), index=False)
 
-        with patch('update_csv.CSV_PATH', str(test_csv)):
+        with patch("update_csv.CSV_PATH", str(test_csv)):
             values = {
                 "Issue Number": "#123",
                 "Risk": "Updated risk",
@@ -107,7 +124,8 @@ Examples
                 "Reach": "Very High",
                 "Mitigations": None,
                 "Ownership": "Updated owner",
-                "Examples": None
+                "Examples": None,
+                "Tags": "Governance, Software Sustainability",
             }
             update_csv_row(values, "999")
 
@@ -120,64 +138,62 @@ Examples
             assert df.iloc[0]["Mitigations"] == "Original mitigations"
             assert df.iloc[0]["Ownership"] == "Updated owner"
             assert df.iloc[0]["Examples"] == "Original examples"
-            assert df.iloc[0]["Tags"] == "environmental"
+            assert df.iloc[0]["Tags"] == "Governance, Software Sustainability"
             assert pd.isna(df.iloc[0]["Maintainer Notes"]) or df.iloc[0]["Maintainer Notes"] == ""
             assert "#999" in str(df.iloc[0]["Updates"])
 
     def test_update_csv_row_issue_not_found(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        existing_df = pd.DataFrame({
-            "Risk": ["Original risk"],
-            "Likelihood": ["Low"],
-            "Severity": ["High"],
-            "Reach": ["Medium"],
-            "Mitigations": ["Original mitigations"],
-            "Ownership": ["Original owner"],
-            "Examples": ["Original examples"],
-            "Tags": [""],
-            "Issue": ["#123"],
-            "Updates": ["#123"],
-            "Maintainer Notes": [""]
-        })
+        existing_df = pd.DataFrame(
+            {
+                "Risk": ["Original risk"],
+                "Likelihood": ["Low"],
+                "Severity": ["High"],
+                "Reach": ["Medium"],
+                "Mitigations": ["Original mitigations"],
+                "Ownership": ["Original owner"],
+                "Examples": ["Original examples"],
+                "Tags": [""],
+                "Issue": ["#123"],
+                "Updates": ["#123"],
+                "Maintainer Notes": [""],
+            }
+        )
         existing_df.to_csv(str(test_csv), index=False)
 
-        with patch('update_csv.CSV_PATH', str(test_csv)):
-            values = {
-                "Issue Number": "#999",
-                "Risk": "Updated risk"
-            }
+        with patch("update_csv.CSV_PATH", str(test_csv)):
+            values = {"Issue Number": "#999", "Risk": "Updated risk"}
             with pytest.raises(SystemExit):
                 update_csv_row(values, "888")
 
     def test_update_csv_row_no_csv(self, tmp_path):
         test_csv = tmp_path / "nonexistent.csv"
 
-        with patch('update_csv.CSV_PATH', str(test_csv)):
-            values = {
-                "Issue Number": "#123",
-                "Risk": "Updated risk"
-            }
+        with patch("update_csv.CSV_PATH", str(test_csv)):
+            values = {"Issue Number": "#123", "Risk": "Updated risk"}
             with pytest.raises(SystemExit):
                 update_csv_row(values, "777")
 
     def test_update_csv_row_nan_column(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        existing_df = pd.DataFrame({
-            "Risk": ["Original risk"],
-            "Likelihood": ["Low"],
-            "Severity": ["High"],
-            "Reach": ["Medium"],
-            "Mitigations": ["Original mitigations"],
-            "Ownership": ["Original owner"],
-            "Examples": [None],
-            "Tags": [""],
-            "Issue": ["#123"],
-            "Updates": ["#123"],
-            "Maintainer Notes": [""]
-        })
+        existing_df = pd.DataFrame(
+            {
+                "Risk": ["Original risk"],
+                "Likelihood": ["Low"],
+                "Severity": ["High"],
+                "Reach": ["Medium"],
+                "Mitigations": ["Original mitigations"],
+                "Ownership": ["Original owner"],
+                "Examples": [None],
+                "Tags": [""],
+                "Issue": ["#123"],
+                "Updates": ["#123"],
+                "Maintainer Notes": [""],
+            }
+        )
         existing_df.to_csv(str(test_csv), index=False)
 
-        with patch('update_csv.CSV_PATH', str(test_csv)):
+        with patch("update_csv.CSV_PATH", str(test_csv)):
             values = {
                 "Issue Number": "#123",
                 "Risk": None,
@@ -186,7 +202,8 @@ Examples
                 "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
-                "Examples": "https://example.com/skills"
+                "Examples": "https://example.com/skills",
+                "Tags": None,
             }
             update_csv_row(values, "999")
 
@@ -197,22 +214,24 @@ Examples
 
     def test_updates_column_tracking(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        existing_df = pd.DataFrame({
-            "Risk": ["Test risk"],
-            "Likelihood": ["High"],
-            "Severity": ["Medium"],
-            "Reach": ["Low"],
-            "Mitigations": ["Initial mitigations"],
-            "Ownership": ["Owner"],
-            "Examples": ["Example"],
-            "Tags": ["governance"],
-            "Issue": ["#50"],
-            "Updates": ["#50"],
-            "Maintainer Notes": [""]
-        })
+        existing_df = pd.DataFrame(
+            {
+                "Risk": ["Test risk"],
+                "Likelihood": ["High"],
+                "Severity": ["Medium"],
+                "Reach": ["Low"],
+                "Mitigations": ["Initial mitigations"],
+                "Ownership": ["Owner"],
+                "Examples": ["Example"],
+                "Tags": ["Governance"],
+                "Issue": ["#50"],
+                "Updates": ["#50"],
+                "Maintainer Notes": [""],
+            }
+        )
         existing_df.to_csv(str(test_csv), index=False)
 
-        with patch('update_csv.CSV_PATH', str(test_csv)):
+        with patch("update_csv.CSV_PATH", str(test_csv)):
             values_1 = {
                 "Issue Number": "#50",
                 "Risk": "Test risk updated",
@@ -221,7 +240,8 @@ Examples
                 "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
-                "Examples": None
+                "Examples": None,
+                "Tags": None,
             }
             update_csv_row(values_1, "100")
 
@@ -233,7 +253,8 @@ Examples
                 "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
-                "Examples": None
+                "Examples": None,
+                "Tags": None,
             }
             update_csv_row(values_2, "200")
 
@@ -244,22 +265,24 @@ Examples
 
     def test_updates_column_not_duplicated_on_rerun(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        existing_df = pd.DataFrame({
-            "Risk": ["Test risk"],
-            "Likelihood": ["High"],
-            "Severity": ["Medium"],
-            "Reach": ["Low"],
-            "Mitigations": ["Initial mitigations"],
-            "Ownership": ["Owner"],
-            "Examples": ["Example"],
-            "Tags": [""],
-            "Issue": ["#50"],
-            "Updates": ["#50, #100"],
-            "Maintainer Notes": [""]
-        })
+        existing_df = pd.DataFrame(
+            {
+                "Risk": ["Test risk"],
+                "Likelihood": ["High"],
+                "Severity": ["Medium"],
+                "Reach": ["Low"],
+                "Mitigations": ["Initial mitigations"],
+                "Ownership": ["Owner"],
+                "Examples": ["Example"],
+                "Tags": [""],
+                "Issue": ["#50"],
+                "Updates": ["#50, #100"],
+                "Maintainer Notes": [""],
+            }
+        )
         existing_df.to_csv(str(test_csv), index=False)
 
-        with patch('update_csv.CSV_PATH', str(test_csv)):
+        with patch("update_csv.CSV_PATH", str(test_csv)):
             values = {
                 "Issue Number": "#50",
                 "Risk": "Test risk updated",
@@ -268,7 +291,8 @@ Examples
                 "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
-                "Examples": None
+                "Examples": None,
+                "Tags": None,
             }
             update_csv_row(values, "100")
 

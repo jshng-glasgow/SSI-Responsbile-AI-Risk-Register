@@ -1,10 +1,28 @@
-import pandas as pd
 import os
 import re
 import sys
 
-FIELDS = ["Issue Number","Risk", "Likelihood", "Severity", "Reach", "Mitigations", "Ownership", "Examples"]
+import pandas as pd
+
+
+FIELDS = ["Issue Number", "Risk", "Likelihood", "Severity", "Reach", "Mitigations", "Ownership", "Examples", "Tags", "Other Tags"]
 CSV_PATH = "register/risks.csv"
+
+
+def split_tags(raw_value):
+    if not raw_value or raw_value in ("_No response_", "No changes", "None"):
+        return []
+    parts = re.split(r",|\n", raw_value)
+    return [part.strip() for part in parts if part.strip()]
+
+
+def combine_tags(selected_tags, other_tags):
+    tags = []
+    for tag in split_tags(selected_tags) + split_tags(other_tags):
+        if tag not in tags:
+            tags.append(tag)
+    return ", ".join(tags)
+
 
 def parse_issue(body):
     values = {}
@@ -17,44 +35,43 @@ def parse_issue(body):
         content = lines[1].strip() if len(lines) > 1 else ""
         if field in FIELDS:
             values[field] = None if content in ("_No response_", "", "None", "No changes") else content
+
+    combined_tags = combine_tags(values.get("Tags"), values.get("Other Tags"))
+    values["Tags"] = combined_tags if combined_tags else None
+    values.pop("Other Tags", None)
     return values
+
 
 def update_csv_row(values, issue_number):
     file_exists = os.path.exists(CSV_PATH)
-    # eror if trying to update an issue that doesn't exist in the CSV
     if values["Issue Number"] and not file_exists:
-        print(f"Trying to update issue #{values['Issue Number']} but CSV doesn't exist — skipping")
+        print(f"Trying to update issue #{values['Issue Number']} but CSV doesn't exist - skipping")
         sys.exit(1)
-    updated_issue = values['Issue Number'].replace('#', '')
+    updated_issue = values["Issue Number"].replace("#", "")
     risk_register = pd.read_csv(CSV_PATH)
-    # Convert all columns to object type to allow mixed string/NaN values
     risk_register = risk_register.astype(object)
-    # get relevant row from issue number
     row_mask = risk_register["Issue"] == f"#{updated_issue}"
     if not row_mask.any():
-        print(f"Trying to update issue #{updated_issue} but it doesn't exist in CSV — skipping")
+        print(f"Trying to update issue #{updated_issue} but it doesn't exist in CSV - skipping")
         sys.exit(1)
-    
-    # Get the index of the row to update
+
     row_index = risk_register[row_mask].index[0]
-    
-    # update row with new field, skipping any None values
-    for field in FIELDS[1:]:  # skip issue number field
-        if values[field] is not None:
+
+    for field in ["Risk", "Likelihood", "Severity", "Reach", "Mitigations", "Ownership", "Examples", "Tags"]:
+        if values.get(field) is not None:
             risk_register.loc[row_index, field] = values[field]
-    
-    # Append the update issue number to the Updates column
-    update_issue = f"#{issue_number}"  # The current issue number (update request)
-    current_updates = risk_register.loc[row_index, 'Updates'] if 'Updates' in risk_register.columns else ''
+
+    update_issue = f"#{issue_number}"
+    current_updates = risk_register.loc[row_index, "Updates"] if "Updates" in risk_register.columns else ""
     if pd.notna(current_updates) and current_updates:
         existing_updates = [item.strip() for item in str(current_updates).split(",") if item.strip()]
         if update_issue not in existing_updates:
-            risk_register.loc[row_index, 'Updates'] = f"{current_updates}, {update_issue}"
+            risk_register.loc[row_index, "Updates"] = f"{current_updates}, {update_issue}"
     else:
-        risk_register.loc[row_index, 'Updates'] = update_issue
+        risk_register.loc[row_index, "Updates"] = update_issue
 
-    # write updated row back to CSV
     risk_register.to_csv(CSV_PATH, index=False)
+
 
 if __name__ == "__main__":
     body = os.environ.get("ISSUE_BODY", "")
@@ -63,7 +80,7 @@ if __name__ == "__main__":
     values = parse_issue(body)
 
     if not values.get("Issue Number"):
-        print("Could not parse issue number from issue body — skipping")
+        print("Could not parse issue number from issue body - skipping")
         sys.exit(1)
 
     update_csv_row(values, issue_number)

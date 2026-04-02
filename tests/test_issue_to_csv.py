@@ -4,10 +4,9 @@ from unittest.mock import patch
 
 import pandas as pd
 
-# Add the scripts directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.github', 'scripts'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".github", "scripts"))
 
-from issue_to_csv import parse_issue, parse_labels, upsert_csv, CSV_PATH
+from issue_to_csv import combine_tags, parse_issue, split_tags, upsert_csv
 
 
 class TestIssueToCSV:
@@ -32,6 +31,12 @@ Test owner
 
 ### Examples
 Test examples
+
+### Tags
+Economic, Environmental
+
+### Other Tags
+Local Practice
 """
         values = parse_issue(body)
         assert values["Risk"] == "Test risk description"
@@ -41,6 +46,7 @@ Test examples
         assert values["Mitigations"] == "Some mitigations"
         assert values["Ownership"] == "Test owner"
         assert values["Examples"] == "Test examples"
+        assert values["Tags"] == "Economic, Environmental, Local Practice"
 
     def test_parse_issue_no_response(self):
         body = """### Risk
@@ -63,6 +69,11 @@ _No response_
 
 ### Examples
 Examples
+
+### Tags
+_No response_
+
+### Other Tags
 """
         values = parse_issue(body)
         assert values["Risk"] == "Test risk"
@@ -72,15 +83,18 @@ Examples
         assert values["Mitigations"] == ""
         assert values["Ownership"] == ""
         assert values["Examples"] == "Examples"
+        assert values["Tags"] == ""
 
-    def test_parse_labels_extracts_tag_prefix(self):
-        raw_labels = '["new risk", "tag: environmental", "tag: research integrity", "bug"]'
-        assert parse_labels(raw_labels) == ["environmental", "research integrity"]
+    def test_split_tags_supports_commas_and_newlines(self):
+        assert split_tags("Economic, Environmental\nGovernance") == ["Economic", "Environmental", "Governance"]
+
+    def test_combine_tags_deduplicates(self):
+        assert combine_tags("Economic, Environmental", "Environmental, Local Practice") == "Economic, Environmental, Local Practice"
 
     def test_upsert_csv_new_file(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
 
-        with patch('issue_to_csv.CSV_PATH', str(test_csv)):
+        with patch("issue_to_csv.CSV_PATH", str(test_csv)):
             values = {
                 "Risk": "Test risk",
                 "Likelihood": "High",
@@ -88,9 +102,10 @@ Examples
                 "Reach": "Low",
                 "Mitigations": "Mitigations",
                 "Ownership": "Owner",
-                "Examples": "Examples"
+                "Examples": "Examples",
+                "Tags": "Environmental, Training and Development",
             }
-            upsert_csv(values, "123", ["environmental", "training and skills"])
+            upsert_csv(values, "123")
 
             df = pd.read_csv(str(test_csv))
             assert len(df) == 1
@@ -98,27 +113,29 @@ Examples
             assert df.iloc[0]["Issue"] == "#123"
             assert df.iloc[0]["Updates"] == "#123"
             assert df.iloc[0]["Reach"] == "Low"
-            assert df.iloc[0]["Tags"] == "environmental, training and skills"
+            assert df.iloc[0]["Tags"] == "Environmental, Training and Development"
             assert pd.isna(df.iloc[0]["Maintainer Notes"]) or df.iloc[0]["Maintainer Notes"] == ""
 
     def test_upsert_csv_existing_issue_updates_tags_without_duplicates(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        existing_df = pd.DataFrame({
-            "Risk": ["Existing risk"],
-            "Likelihood": ["Low"],
-            "Severity": ["High"],
-            "Reach": ["Medium"],
-            "Mitigations": ["Existing mitigations"],
-            "Ownership": ["Existing owner"],
-            "Examples": ["Existing examples"],
-            "Tags": ["environmental"],
-            "Issue": ["#124"],
-            "Updates": ["#124"],
-            "Maintainer Notes": ["Keep this note"]
-        })
+        existing_df = pd.DataFrame(
+            {
+                "Risk": ["Existing risk"],
+                "Likelihood": ["Low"],
+                "Severity": ["High"],
+                "Reach": ["Medium"],
+                "Mitigations": ["Existing mitigations"],
+                "Ownership": ["Existing owner"],
+                "Examples": ["Existing examples"],
+                "Tags": ["Environmental"],
+                "Issue": ["#124"],
+                "Updates": ["#124"],
+                "Maintainer Notes": ["Keep this note"],
+            }
+        )
         existing_df.to_csv(str(test_csv), index=False)
 
-        with patch('issue_to_csv.CSV_PATH', str(test_csv)):
+        with patch("issue_to_csv.CSV_PATH", str(test_csv)):
             values = {
                 "Risk": "Existing risk revised",
                 "Likelihood": "High",
@@ -126,9 +143,10 @@ Examples
                 "Reach": "Very High",
                 "Mitigations": "New mitigations",
                 "Ownership": "New owner",
-                "Examples": "New examples"
+                "Examples": "New examples",
+                "Tags": "Research Integrity",
             }
-            upsert_csv(values, "124", ["research integrity"])
+            upsert_csv(values, "124")
 
             df = pd.read_csv(str(test_csv))
             assert len(df) == 1
@@ -136,5 +154,5 @@ Examples
             assert df.iloc[0]["Issue"] == "#124"
             assert df.iloc[0]["Updates"] == "#124"
             assert df.iloc[0]["Reach"] == "Very High"
-            assert df.iloc[0]["Tags"] == "research integrity"
+            assert df.iloc[0]["Tags"] == "Research Integrity"
             assert df.iloc[0]["Maintainer Notes"] == "Keep this note"

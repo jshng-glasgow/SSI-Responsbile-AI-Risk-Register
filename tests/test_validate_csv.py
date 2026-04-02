@@ -5,8 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-# Add the scripts directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.github', 'scripts'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".github", "scripts"))
 
 from validate_csv import validate
 
@@ -14,7 +13,7 @@ from validate_csv import validate
 class TestValidateCSV:
     def test_valid_csv(self, tmp_path):
         csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Tags,Issue,Updates,Maintainer Notes
-"Test risk",High,Medium,Low,"Mitigation text","Owner","Examples","environmental","#1","#1",""
+"Test risk",High,Medium,Low,"Mitigation text","Owner","Examples","Environmental","#1","#1",""
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -24,7 +23,7 @@ class TestValidateCSV:
         original_cwd = os.getcwd()
         os.chdir(tmp_path)
         try:
-            with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+            with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
                 validate()
                 output = mock_stdout.getvalue()
                 assert "CSV valid" in output
@@ -33,7 +32,7 @@ class TestValidateCSV:
 
     def test_missing_columns(self, tmp_path):
         csv_content = """Risk,Likelihood,Reach,Mitigations,Ownership,Examples,Tags,Issue,Updates,Maintainer Notes
-"Test risk",High,Low,"Mitigation","Owner","Examples","environmental","#1","#1",""
+"Test risk",High,Low,"Mitigation","Owner","Examples","Environmental","#1","#1",""
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -50,7 +49,7 @@ class TestValidateCSV:
 
     def test_empty_required_field(self, tmp_path):
         csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Tags,Issue,Updates,Maintainer Notes
-"",High,Medium,Low,"Mitigation","Owner","Examples","environmental","#1","#1",""
+"",High,Medium,Low,"Mitigation","Owner","Examples","Environmental","#1","#1",""
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -67,7 +66,7 @@ class TestValidateCSV:
 
     def test_invalid_likelihood(self, tmp_path):
         csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Tags,Issue,Updates,Maintainer Notes
-"Test risk",Invalid,Medium,Low,"Mitigation","Owner","Examples","environmental","#1","#1",""
+"Test risk",Invalid,Medium,Low,"Mitigation","Owner","Examples","Environmental","#1","#1",""
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -84,7 +83,7 @@ class TestValidateCSV:
 
     def test_invalid_severity(self, tmp_path):
         csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Tags,Issue,Updates,Maintainer Notes
-"Test risk",High,Invalid,Low,"Mitigation","Owner","Examples","environmental","#1","#1",""
+"Test risk",High,Invalid,Low,"Mitigation","Owner","Examples","Environmental","#1","#1",""
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
@@ -101,7 +100,7 @@ class TestValidateCSV:
 
     def test_invalid_reach(self, tmp_path):
         csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Tags,Issue,Updates,Maintainer Notes
-"Test risk",High,Medium,Invalid,"Mitigation","Owner","Examples","environmental","#1","#1",""
+"Test risk",High,Medium,Invalid,"Mitigation","Owner","Examples","Environmental","#1","#1",""
 """
         register_dir = tmp_path / "register"
         register_dir.mkdir()
