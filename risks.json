@@ -174,5 +174,28 @@
         "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/142"
       }
     ]
+  },
+  {
+    "Risk": "This risk has non-default tags",
+    "Likelihood": "Very Low",
+    "Severity": "Very Low",
+    "Reach": "Very Low",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "Societal, Research Integrity, Epistemic, Ethical, Equity",
+    "Issue": "#144",
+    "Updates": "#144",
+    "Maintainer Notes": "",
+    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/144",
+    "update_refs": [
+      "#144"
+    ],
+    "update_urls": [
+      {
+        "label": "#144",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/144"
+      }
+    ]
   }
 ]
