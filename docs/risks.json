@@ -123,5 +123,79 @@
         "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/135"
       }
     ]
+  },
+  {
+    "Risk": "This risk will be tagged",
+    "Likelihood": "Very Low",
+    "Severity": "Very Low",
+    "Reach": "Very Low",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "",
+    "Issue": "#137",
+    "Updates": "#137",
+    "Maintainer Notes": "",
+    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/137",
+    "update_refs": [
+      "#137"
+    ],
+    "update_urls": [
+      {
+        "label": "#137",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/137"
+      }
+    ]
+  },
+  {
+    "Risk": "This risk has some tags!",
+    "Likelihood": "Very Low",
+    "Severity": "Very Low",
+    "Reach": "Very Low",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "Societal, Professional, Economic, Governance",
+    "Issue": "#140",
+    "Updates": "#140, #142",
+    "Maintainer Notes": "",
+    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/140",
+    "update_refs": [
+      "#140",
+      "#142"
+    ],
+    "update_urls": [
+      {
+        "label": "#140",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/140"
+      },
+      {
+        "label": "#142",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/142"
+      }
+    ]
+  },
+  {
+    "Risk": "This risk has non-default tags",
+    "Likelihood": "Very Low",
+    "Severity": "Very Low",
+    "Reach": "Very Low",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "Societal, Research Integrity, Epistemic, Ethical, Equity",
+    "Issue": "#144",
+    "Updates": "#144",
+    "Maintainer Notes": "",
+    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/144",
+    "update_refs": [
+      "#144"
+    ],
+    "update_urls": [
+      {
+        "label": "#144",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/144"
+      }
+    ]
   }
 ]
