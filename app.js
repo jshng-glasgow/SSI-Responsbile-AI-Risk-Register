@@ -182,9 +182,9 @@ function renderRecord(record) {
 
   title.textContent = record["Risk"];
   meta.append(
-    createBadge(record["Likelihood"] || "Unknown", record["Likelihood"] || "Unknown"),
-    createBadge(record["Severity"] || "Unknown", record["Severity"] || "Unknown"),
-    createBadge(record["Reach"] || "Unknown", record["Reach"] || "Unknown")
+    createBadge(`${record["Likelihood"] || "Unknown"} Likelihood`, record["Likelihood"] || "Unknown"),
+    createBadge(`${record["Severity"] || "Unknown"} Severity`, record["Severity"] || "Unknown"),
+    createBadge(`${record["Reach"] || "Unknown"} Reach`, record["Reach"] || "Unknown")
   );
   const tags = (record["Tags"] || "").split(",").map((tag) => tag.trim()).filter(Boolean);
   tags.forEach((tag) => meta.append(createBadge(tag, "tag")));
