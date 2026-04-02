@@ -29,7 +29,7 @@ The live register can be viewed [here](https://jshng-glasgow.github.io/SSI-Respo
 
 The register contains:
 
-* Seven contributor-editable fields, which can be proposed through the contribution routes described above.
+* Eight contributor-editable fields, which can be proposed through the contribution routes described above.
 * One maintainer-only field, **Maintainer Notes**, which is used to document editorial decisions and is not submitted through the public issue templates.
 
 Please be as descriptive as possible when filling in the contributor-editable fields. An explanation of each field is given below.
@@ -68,6 +68,10 @@ Please be as descriptive as possible when filling in the contributor-editable fi
 **Ownership**: (Optional) Who is responsible for addressing this risk? This might be practitioners, institutions, funders, government, or tool developers. It might be multiple people or groups.
 
 **Examples**: (Optional) Are there any examples of where this risk has been managed elsewhere? Please provide any relevant links or evidence if available.
+
+**Tags**: (Optional) Short category labels used to group similar risks in the public register, for example *environmental*, *research integrity*, or *training and skills*. In GitHub-driven submissions these are derived from issue labels prefixed with `tag:`.
+
+Contributors can attach multiple tags to a risk. These are displayed in the public-facing register and can be used for filtering.
 
 **Issue**: (Not editable) A unique identifier for the risk, which can be used to reference it when submitting updates.
 

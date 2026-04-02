@@ -47,7 +47,9 @@ def update_csv_row(values, issue_number):
     update_issue = f"#{issue_number}"  # The current issue number (update request)
     current_updates = risk_register.loc[row_index, 'Updates'] if 'Updates' in risk_register.columns else ''
     if pd.notna(current_updates) and current_updates:
-        risk_register.loc[row_index, 'Updates'] = f"{current_updates}, {update_issue}"
+        existing_updates = [item.strip() for item in str(current_updates).split(",") if item.strip()]
+        if update_issue not in existing_updates:
+            risk_register.loc[row_index, 'Updates'] = f"{current_updates}, {update_issue}"
     else:
         risk_register.loc[row_index, 'Updates'] = update_issue
 

@@ -1,13 +1,14 @@
-import pytest
-import pandas as pd
 import os
 import sys
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+
+import pandas as pd
 
 # Add the scripts directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.github', 'scripts'))
 
-from issue_to_csv import parse_issue, append_to_csv, FIELDS, CSV_PATH
+from issue_to_csv import parse_issue, parse_labels, upsert_csv, CSV_PATH
+
 
 class TestIssueToCSV:
     def test_parse_issue_complete(self):
@@ -72,12 +73,13 @@ Examples
         assert values["Ownership"] == ""
         assert values["Examples"] == "Examples"
 
-    def test_append_to_csv_new_file(self, tmp_path):
-        # Mock CSV_PATH to tmp_path
-        original_csv_path = CSV_PATH
+    def test_parse_labels_extracts_tag_prefix(self):
+        raw_labels = '["new risk", "tag: environmental", "tag: research integrity", "bug"]'
+        assert parse_labels(raw_labels) == ["environmental", "research integrity"]
+
+    def test_upsert_csv_new_file(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        
-        # Patch the CSV_PATH in the module
+
         with patch('issue_to_csv.CSV_PATH', str(test_csv)):
             values = {
                 "Risk": "Test risk",
@@ -88,20 +90,19 @@ Examples
                 "Ownership": "Owner",
                 "Examples": "Examples"
             }
-            append_to_csv(values, "123")
-            
-            # Check the file was created and has correct content
+            upsert_csv(values, "123", ["environmental", "training and skills"])
+
             df = pd.read_csv(str(test_csv))
             assert len(df) == 1
             assert df.iloc[0]["Risk"] == "Test risk"
             assert df.iloc[0]["Issue"] == "#123"
             assert df.iloc[0]["Updates"] == "#123"
             assert df.iloc[0]["Reach"] == "Low"
+            assert df.iloc[0]["Tags"] == "environmental, training and skills"
             assert pd.isna(df.iloc[0]["Maintainer Notes"]) or df.iloc[0]["Maintainer Notes"] == ""
 
-    def test_append_to_csv_existing_file(self, tmp_path):
+    def test_upsert_csv_existing_issue_updates_tags_without_duplicates(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        # Create existing CSV
         existing_df = pd.DataFrame({
             "Risk": ["Existing risk"],
             "Likelihood": ["Low"],
@@ -110,15 +111,16 @@ Examples
             "Mitigations": ["Existing mitigations"],
             "Ownership": ["Existing owner"],
             "Examples": ["Existing examples"],
-            "Issue": ["#1"],
-            "Updates": ["#1"],
-            "Maintainer Notes": [""]
+            "Tags": ["environmental"],
+            "Issue": ["#124"],
+            "Updates": ["#124"],
+            "Maintainer Notes": ["Keep this note"]
         })
         existing_df.to_csv(str(test_csv), index=False)
-        
+
         with patch('issue_to_csv.CSV_PATH', str(test_csv)):
             values = {
-                "Risk": "New risk",
+                "Risk": "Existing risk revised",
                 "Likelihood": "High",
                 "Severity": "Medium",
                 "Reach": "Very High",
@@ -126,12 +128,13 @@ Examples
                 "Ownership": "New owner",
                 "Examples": "New examples"
             }
-            append_to_csv(values, "124")
-            
+            upsert_csv(values, "124", ["research integrity"])
+
             df = pd.read_csv(str(test_csv))
-            assert len(df) == 2
-            assert df.iloc[1]["Risk"] == "New risk"
-            assert df.iloc[1]["Issue"] == "#124"
-            assert df.iloc[1]["Updates"] == "#124"
-            assert df.iloc[1]["Reach"] == "Very High"
-            assert pd.isna(df.iloc[1]["Maintainer Notes"]) or df.iloc[1]["Maintainer Notes"] == ""
+            assert len(df) == 1
+            assert df.iloc[0]["Risk"] == "Existing risk revised"
+            assert df.iloc[0]["Issue"] == "#124"
+            assert df.iloc[0]["Updates"] == "#124"
+            assert df.iloc[0]["Reach"] == "Very High"
+            assert df.iloc[0]["Tags"] == "research integrity"
+            assert df.iloc[0]["Maintainer Notes"] == "Keep this note"

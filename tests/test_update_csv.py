@@ -1,13 +1,15 @@
-import pytest
-import pandas as pd
 import os
 import sys
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+
+import pandas as pd
+import pytest
 
 # Add the scripts directory to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.github', 'scripts'))
 
-from update_csv import parse_issue, update_csv_row, FIELDS, CSV_PATH
+from update_csv import parse_issue, update_csv_row
+
 
 class TestUpdateCSV:
     def test_parse_issue_complete(self):
@@ -81,7 +83,6 @@ Examples
 
     def test_update_csv_row_success(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        # Create existing CSV
         existing_df = pd.DataFrame({
             "Risk": ["Original risk"],
             "Likelihood": ["Low"],
@@ -90,41 +91,41 @@ Examples
             "Mitigations": ["Original mitigations"],
             "Ownership": ["Original owner"],
             "Examples": ["Original examples"],
+            "Tags": ["environmental"],
             "Issue": ["#123"],
             "Updates": ["#123"],
             "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
-        
+
         with patch('update_csv.CSV_PATH', str(test_csv)):
             values = {
                 "Issue Number": "#123",
                 "Risk": "Updated risk",
-                "Likelihood": None,  # Should not update
-                "Severity": "Medium",  # Should update
-                "Reach": "Very High",  # Should update
+                "Likelihood": None,
+                "Severity": "Medium",
+                "Reach": "Very High",
                 "Mitigations": None,
                 "Ownership": "Updated owner",
                 "Examples": None
             }
             update_csv_row(values, "999")
-            
+
             df = pd.read_csv(str(test_csv))
             assert len(df) == 1
             assert df.iloc[0]["Risk"] == "Updated risk"
-            assert df.iloc[0]["Likelihood"] == "Low"  # Unchanged
-            assert df.iloc[0]["Severity"] == "Medium"  # Updated
-            assert df.iloc[0]["Reach"] == "Very High"  # Updated
-            assert df.iloc[0]["Mitigations"] == "Original mitigations"  # Unchanged
-            assert df.iloc[0]["Ownership"] == "Updated owner"  # Updated
-            assert df.iloc[0]["Examples"] == "Original examples"  # Unchanged
+            assert df.iloc[0]["Likelihood"] == "Low"
+            assert df.iloc[0]["Severity"] == "Medium"
+            assert df.iloc[0]["Reach"] == "Very High"
+            assert df.iloc[0]["Mitigations"] == "Original mitigations"
+            assert df.iloc[0]["Ownership"] == "Updated owner"
+            assert df.iloc[0]["Examples"] == "Original examples"
+            assert df.iloc[0]["Tags"] == "environmental"
             assert pd.isna(df.iloc[0]["Maintainer Notes"]) or df.iloc[0]["Maintainer Notes"] == ""
-            # Updates should have the update issue appended
             assert "#999" in str(df.iloc[0]["Updates"])
 
     def test_update_csv_row_issue_not_found(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
-        # Create existing CSV
         existing_df = pd.DataFrame({
             "Risk": ["Original risk"],
             "Likelihood": ["Low"],
@@ -133,15 +134,16 @@ Examples
             "Mitigations": ["Original mitigations"],
             "Ownership": ["Original owner"],
             "Examples": ["Original examples"],
+            "Tags": [""],
             "Issue": ["#123"],
             "Updates": ["#123"],
             "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
-        
+
         with patch('update_csv.CSV_PATH', str(test_csv)):
             values = {
-                "Issue Number": "#999",  # Non-existent
+                "Issue Number": "#999",
                 "Risk": "Updated risk"
             }
             with pytest.raises(SystemExit):
@@ -149,7 +151,7 @@ Examples
 
     def test_update_csv_row_no_csv(self, tmp_path):
         test_csv = tmp_path / "nonexistent.csv"
-        
+
         with patch('update_csv.CSV_PATH', str(test_csv)):
             values = {
                 "Issue Number": "#123",
@@ -159,9 +161,7 @@ Examples
                 update_csv_row(values, "777")
 
     def test_update_csv_row_nan_column(self, tmp_path):
-        # Test that updating a column containing only NaN values works
         test_csv = tmp_path / "risks.csv"
-        # Create CSV with NaN values in Examples column
         existing_df = pd.DataFrame({
             "Risk": ["Original risk"],
             "Likelihood": ["Low"],
@@ -169,13 +169,14 @@ Examples
             "Reach": ["Medium"],
             "Mitigations": ["Original mitigations"],
             "Ownership": ["Original owner"],
-            "Examples": [None],  # NaN column
+            "Examples": [None],
+            "Tags": [""],
             "Issue": ["#123"],
             "Updates": ["#123"],
             "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
-        
+
         with patch('update_csv.CSV_PATH', str(test_csv)):
             values = {
                 "Issue Number": "#123",
@@ -185,19 +186,17 @@ Examples
                 "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
-                "Examples": "https://example.com/skills"  # Adding string to NaN column
+                "Examples": "https://example.com/skills"
             }
             update_csv_row(values, "999")
-            
+
             df = pd.read_csv(str(test_csv))
             assert len(df) == 1
             assert df.iloc[0]["Examples"] == "https://example.com/skills"
             assert df.iloc[0]["Updates"] == "#123, #999"
 
     def test_updates_column_tracking(self, tmp_path):
-        # Test that the Updates column correctly tracks all update issues
         test_csv = tmp_path / "risks.csv"
-        # Create initial risk
         existing_df = pd.DataFrame({
             "Risk": ["Test risk"],
             "Likelihood": ["High"],
@@ -206,14 +205,14 @@ Examples
             "Mitigations": ["Initial mitigations"],
             "Ownership": ["Owner"],
             "Examples": ["Example"],
+            "Tags": ["governance"],
             "Issue": ["#50"],
             "Updates": ["#50"],
             "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
-        
+
         with patch('update_csv.CSV_PATH', str(test_csv)):
-            # First update via issue #100
             values_1 = {
                 "Issue Number": "#50",
                 "Risk": "Test risk updated",
@@ -225,8 +224,7 @@ Examples
                 "Examples": None
             }
             update_csv_row(values_1, "100")
-            
-            # Second update via issue #200
+
             values_2 = {
                 "Issue Number": "#50",
                 "Risk": "Test risk updated again",
@@ -238,9 +236,41 @@ Examples
                 "Examples": None
             }
             update_csv_row(values_2, "200")
-            
+
             df = pd.read_csv(str(test_csv))
             assert len(df) == 1
-            # Updates should contain original issue and all update issues
             assert df.iloc[0]["Updates"] == "#50, #100, #200"
             assert df.iloc[0]["Risk"] == "Test risk updated again"
+
+    def test_updates_column_not_duplicated_on_rerun(self, tmp_path):
+        test_csv = tmp_path / "risks.csv"
+        existing_df = pd.DataFrame({
+            "Risk": ["Test risk"],
+            "Likelihood": ["High"],
+            "Severity": ["Medium"],
+            "Reach": ["Low"],
+            "Mitigations": ["Initial mitigations"],
+            "Ownership": ["Owner"],
+            "Examples": ["Example"],
+            "Tags": [""],
+            "Issue": ["#50"],
+            "Updates": ["#50, #100"],
+            "Maintainer Notes": [""]
+        })
+        existing_df.to_csv(str(test_csv), index=False)
+
+        with patch('update_csv.CSV_PATH', str(test_csv)):
+            values = {
+                "Issue Number": "#50",
+                "Risk": "Test risk updated",
+                "Likelihood": None,
+                "Severity": None,
+                "Reach": None,
+                "Mitigations": None,
+                "Ownership": None,
+                "Examples": None
+            }
+            update_csv_row(values, "100")
+
+            df = pd.read_csv(str(test_csv))
+            assert df.iloc[0]["Updates"] == "#50, #100"

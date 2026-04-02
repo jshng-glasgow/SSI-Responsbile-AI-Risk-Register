@@ -13,6 +13,7 @@ Anyone is welcome to contribute. You do not need to be a member of the SSI or ha
 2. Click **New Issue**
 3. Select **Propose a new risk**
 4. Fill in the form and submit
+5. Add one or more labels prefixed with `tag:` if you want to categorise the risk in the public register
 
 Your proposal will automatically be added to a pull request for review. A maintainer will review and merge the pull request, at which point it will appear in the register.
 

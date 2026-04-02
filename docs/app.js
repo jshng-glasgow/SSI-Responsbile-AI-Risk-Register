@@ -23,6 +23,7 @@ const searchInput = document.querySelector("#search-input");
 const likelihoodFilter = document.querySelector("#likelihood-filter");
 const severityFilter = document.querySelector("#severity-filter");
 const reachFilter = document.querySelector("#reach-filter");
+const tagFilter = document.querySelector("#tag-filter");
 const sortSelect = document.querySelector("#sort-select");
 const resultsSummary = document.querySelector("#results-summary");
 const registerRoot = document.querySelector("#register-root");
@@ -32,7 +33,14 @@ let allRecords = [];
 
 function populateFilter(select, values) {
   const orderedValues = [...values].sort((left, right) => {
-    return (CATEGORY_ORDER[left] ?? -1) - (CATEGORY_ORDER[right] ?? -1);
+    const leftRank = CATEGORY_ORDER[left];
+    const rightRank = CATEGORY_ORDER[right];
+
+    if (leftRank !== undefined || rightRank !== undefined) {
+      return (leftRank ?? -1) - (rightRank ?? -1);
+    }
+
+    return left.localeCompare(right);
   });
 
   for (const value of orderedValues) {
@@ -63,6 +71,13 @@ function matchesFilters(record) {
 
   if (reachFilter.value && record["Reach"] !== reachFilter.value) {
     return false;
+  }
+
+  if (tagFilter.value) {
+    const tags = (record["Tags"] || "").split(",").map((tag) => tag.trim()).filter(Boolean);
+    if (!tags.includes(tagFilter.value)) {
+      return false;
+    }
   }
 
   return true;
@@ -171,6 +186,8 @@ function renderRecord(record) {
     createBadge(record["Severity"] || "Unknown", record["Severity"] || "Unknown"),
     createBadge(record["Reach"] || "Unknown", record["Reach"] || "Unknown")
   );
+  const tags = (record["Tags"] || "").split(",").map((tag) => tag.trim()).filter(Boolean);
+  tags.forEach((tag) => meta.append(createBadge(tag, "tag")));
 
   const fields = [
     buildRow("Likelihood", (container) => appendTextOrPlaceholder(container, record["Likelihood"])),
@@ -179,6 +196,7 @@ function renderRecord(record) {
     buildRow("Mitigations", (container) => appendTextOrPlaceholder(container, record["Mitigations"])),
     buildRow("Ownership", (container) => appendTextOrPlaceholder(container, record["Ownership"])),
     buildRow("Examples", (container) => appendTextOrPlaceholder(container, record["Examples"])),
+    buildRow("Tags", (container) => appendTextOrPlaceholder(container, record["Tags"])),
     buildRow("Issue", (container) => {
       appendIssueLinks(container, record["issue_url"] ? [{ label: record["Issue"], url: record["issue_url"] }] : []);
     }),
@@ -221,8 +239,17 @@ async function init() {
     populateFilter(likelihoodFilter, new Set(allRecords.map((record) => record["Likelihood"]).filter(Boolean)));
     populateFilter(severityFilter, new Set(allRecords.map((record) => record["Severity"]).filter(Boolean)));
     populateFilter(reachFilter, new Set(allRecords.map((record) => record["Reach"]).filter(Boolean)));
+    populateFilter(
+      tagFilter,
+      new Set(
+        allRecords
+          .flatMap((record) => (record["Tags"] || "").split(","))
+          .map((tag) => tag.trim())
+          .filter(Boolean)
+      )
+    );
 
-    [searchInput, likelihoodFilter, severityFilter, reachFilter, sortSelect].forEach((element) => {
+    [searchInput, likelihoodFilter, severityFilter, reachFilter, tagFilter, sortSelect].forEach((element) => {
       element.addEventListener("input", render);
       element.addEventListener("change", render);
     });

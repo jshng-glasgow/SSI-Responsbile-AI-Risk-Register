@@ -2,7 +2,7 @@ name: Issue to CSV Row
 
 on:
   issues:
-    types: [labeled]
+    types: [labeled, unlabeled]
 
 concurrency:
   group: csv-update
@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   add-to-register:
-    if: github.event.label.name == 'new risk'
+    if: contains(join(github.event.issue.labels.*.name, ','), 'new risk') && (github.event.label.name == 'new risk' || startsWith(github.event.label.name, 'tag:'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -35,6 +35,7 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
         run: python .github/scripts/issue_to_csv.py
 
       - name: Create Pull Request
