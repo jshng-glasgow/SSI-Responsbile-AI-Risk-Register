@@ -96,5 +96,27 @@
         "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/131"
       }
     ]
+  },
+  {
+    "Risk": "Adding new risk to test front end.",
+    "Likelihood": "Very Low",
+    "Severity": "Very Low",
+    "Reach": "Very Low",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Issue": "#135",
+    "Updates": "#135",
+    "Maintainer Notes": "",
+    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/135",
+    "update_refs": [
+      "#135"
+    ],
+    "update_urls": [
+      {
+        "label": "#135",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/135"
+      }
+    ]
   }
 ]
