@@ -197,5 +197,28 @@
         "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/144"
       }
     ]
+  },
+  {
+    "Risk": "Testing whether tags are rendered correctly.",
+    "Likelihood": "Very Low",
+    "Severity": "Very Low",
+    "Reach": "Very Low",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "",
+    "Issue": "#146",
+    "Updates": "#146",
+    "Maintainer Notes": "",
+    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/146",
+    "update_refs": [
+      "#146"
+    ],
+    "update_urls": [
+      {
+        "label": "#146",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/146"
+      }
+    ]
   }
 ]
