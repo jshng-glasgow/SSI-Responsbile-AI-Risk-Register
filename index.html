@@ -4,110 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSI Generative AI Risk Register</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-        th {
-            background-color: #2c3e50;
-            color: white;
-            padding: 10px;
-            text-align: left;
-        }
-        td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            vertical-align: top;
-            white-space: normal;
-            word-wrap: break-word;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .high { color: #c0392b; font-weight: bold; }
-        .medium { color: #e67e22; font-weight: bold; }
-        .low { color: #27ae60; font-weight: bold; }
-        .unknown { color: #7f8c8d; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <h1>SSI Generative AI Risk Register</h1>
-    <p>A community-maintained register of risks associated with the use of AI in Research Software Engineering.
-    Contribute via <a href="https://github.com/jshng-glasgow/SSI-Responsible-AI-Risk-Register/">GitHub</a>.</p>
-    <table border="1" class="dataframe risk-table">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Risk</th>
-      <th>Likelihood</th>
-      <th>Severity</th>
-      <th>Reach</th>
-      <th>Mitigations</th>
-      <th>Ownership</th>
-      <th>Examples</th>
-      <th>Issue</th>
-      <th>Updates</th>
-      <th>Maintainer Notes</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Over-use of AI might lead to a degredation in software skills for RSE professionals. This could have unintended consequences on code quality, research integrity and critical review capabilities.</td>
-      <td>Medium</td>
-      <td>Medium</td>
-      <td>High</td>
-      <td>Ensure software training remains central to RSE development. Ensure relevant skills and experience remain highly valued by employers and institutions. Demonstrate the effectiveness of relevant skills when developing research code with AI.</td>
-      <td>RSEs, Institutions, Employers, Managers, Communities.</td>
-      <td>https://digital-skills-jobs.europa.eu/en/latest/briefs/coding-and-programming-skills-age-generativeai-deep-dive</td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/119" target="_blank">#119</a></td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/119" target="_blank">#119</a>, <a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/121" target="_blank">#121</a></td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <td>AI use by domain scientists to develop research software cuts out RSE participation. Easy availability of AI coding tools may result in domain scientists developing software tools and pipelines without asking for RSE support / input, potentially creating large technical debts once AI generated code-bases fail</td>
-      <td>Medium</td>
-      <td>Medium</td>
-      <td>Medium</td>
-      <td>- Ensure RSE units are visible and accessible in organisations and barriers for access are low, especially for high-level consultations.\n- Clear institutional guidelines about software review requirements with humans in the loop</td>
-      <td>RSEs, Institutions, Managers</td>
-      <td>NaN</td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/123" target="_blank">#123</a></td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/123" target="_blank">#123</a></td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <td>Over use of AI might cause environmental collapse.</td>
-      <td>Medium</td>
-      <td>High</td>
-      <td>Very High</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>Link to good practice</td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/125" target="_blank">#125</a></td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/125" target="_blank">#125</a>, <a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/127" target="_blank">#127</a></td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <td>Testing new fields</td>
-      <td>High</td>
-      <td>Very High</td>
-      <td>Medium</td>
-      <td>This can be mitigated by...</td>
-      <td>Owned by the XYZ community</td>
-      <td>Community ABC addressed it by...</td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/131" target="_blank">#131</a></td>
-      <td><a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/131" target="_blank">#131</a></td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">Software Sustainability Institute</p>
+            <h1>Generative AI Risk Register</h1>
+            <p class="intro">
+                A community-maintained register of risks associated with AI in Research Software Engineering.
+                Browse, search, sort, and filter the current register below.
+            </p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="https://github.com/jshng-glasgow/SSI-Responsible-AI-Risk-Register/" target="_blank" rel="noreferrer">Contribute on GitHub</a>
+                <a class="button button-secondary" href="./risks.json" target="_blank" rel="noreferrer">Download JSON</a>
+            </div>
+        </section>
+
+        <section class="controls-panel" aria-label="Register controls">
+            <div class="control">
+                <label for="search-input">Search</label>
+                <input id="search-input" type="search" placeholder="Search risks, mitigations, ownership, examples..." />
+            </div>
+            <div class="control">
+                <label for="likelihood-filter">Likelihood</label>
+                <select id="likelihood-filter">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="control">
+                <label for="severity-filter">Severity</label>
+                <select id="severity-filter">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="control">
+                <label for="reach-filter">Reach</label>
+                <select id="reach-filter">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="control">
+                <label for="sort-select">Sort by</label>
+                <select id="sort-select">
+                    <option value="risk-asc">Risk (A-Z)</option>
+                    <option value="likelihood-desc">Likelihood (highest first)</option>
+                    <option value="severity-desc">Severity (highest first)</option>
+                    <option value="reach-desc">Reach (highest first)</option>
+                    <option value="issue-desc">Most recent issue</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="results-bar" aria-live="polite">
+            <p id="results-summary">Loading register...</p>
+        </section>
+
+        <section id="register-root" class="register-root" aria-live="polite"></section>
+    </main>
+
+    <template id="risk-card-template">
+        <article class="risk-card">
+            <div class="card-header">
+                <div class="card-meta"></div>
+                <h2 class="card-title"></h2>
+            </div>
+            <dl class="card-grid"></dl>
+        </article>
+    </template>
+
+    <script src="./app.js"></script>
 </body>
 </html>
