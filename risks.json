@@ -125,70 +125,6 @@
     ]
   },
   {
-    "Risk": "- Clear institutional guidelines about software review requirements with humans in the loop\"",
-    "Likelihood": "RSEs, Institutions, Managers",
-    "Severity": "",
-    "Reach": "#123",
-    "Mitigations": "#123",
-    "Ownership": "",
-    "Examples": "",
-    "Tags": "",
-    "Issue": "",
-    "Updates": "",
-    "Maintainer Notes": "",
-    "issue_url": null,
-    "update_refs": [],
-    "update_urls": []
-  },
-  {
-    "Risk": "Over use of AI might cause environmental collapse.",
-    "Likelihood": "Medium",
-    "Severity": "High",
-    "Reach": "Very High",
-    "Mitigations": "",
-    "Ownership": "",
-    "Examples": "Link to good practice",
-    "Tags": "#125",
-    "Issue": "#125, #127",
-    "Updates": "",
-    "Maintainer Notes": "",
-    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/125, #127",
-    "update_refs": [],
-    "update_urls": []
-  },
-  {
-    "Risk": "Testing new fields",
-    "Likelihood": "High",
-    "Severity": "Very High",
-    "Reach": "Medium",
-    "Mitigations": "This can be mitigated by...",
-    "Ownership": "Owned by the XYZ community",
-    "Examples": "Community ABC addressed it by...",
-    "Tags": "#131",
-    "Issue": "#131",
-    "Updates": "",
-    "Maintainer Notes": "",
-    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/131",
-    "update_refs": [],
-    "update_urls": []
-  },
-  {
-    "Risk": "Adding new risk to test front end.",
-    "Likelihood": "Very Low",
-    "Severity": "Very Low",
-    "Reach": "Very Low",
-    "Mitigations": "",
-    "Ownership": "",
-    "Examples": "",
-    "Tags": "#135",
-    "Issue": "#135",
-    "Updates": "",
-    "Maintainer Notes": "",
-    "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/135",
-    "update_refs": [],
-    "update_urls": []
-  },
-  {
     "Risk": "This risk will be tagged",
     "Likelihood": "Very Low",
     "Severity": "Very Low",
@@ -196,12 +132,19 @@
     "Mitigations": "",
     "Ownership": "",
     "Examples": "",
-    "Tags": "#137",
+    "Tags": "",
     "Issue": "#137",
-    "Updates": "",
+    "Updates": "#137",
     "Maintainer Notes": "",
     "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/137",
-    "update_refs": [],
-    "update_urls": []
+    "update_refs": [
+      "#137"
+    ],
+    "update_urls": [
+      {
+        "label": "#137",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/137"
+      }
+    ]
   }
 ]
