@@ -2,6 +2,7 @@ import pytest
 import pandas as pd
 import os
 import sys
+import json
 from bs4 import BeautifulSoup
 
 # Add the scripts directory to path
@@ -13,15 +14,16 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.github', 'scr
 class TestRenderTable:
     def test_render_table_creates_html(self, tmp_path):
         # Create a test CSV
-        csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Issue,Maintainer Notes
-"Test risk",High,Medium,Low,"Mitigation text","Owner","Examples","#1",""
-"Another risk",Low,High,Very High,"Another mitigation","Another owner","Another examples","#2","Synthesised from issues #2 and #5"
+        csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Issue,Updates,Maintainer Notes
+"Test risk",High,Medium,Low,"Mitigation text","Owner","Examples","#1","#1",""
+"Another risk",Low,High,Very High,"Another mitigation","Another owner","Another examples","#2","#2, #5","Synthesised from issues #2 and #5"
 """
         csv_file = tmp_path / "register" / "risks.csv"
         csv_file.parent.mkdir()
         csv_file.write_text(csv_content)
         
         html_file = tmp_path / "docs" / "index.html"
+        json_file = tmp_path / "docs" / "risks.json"
         
         # Change to tmp_path
         original_cwd = os.getcwd()
@@ -36,10 +38,14 @@ class TestRenderTable:
             
             # Check HTML file was created
             assert html_file.exists()
+            assert json_file.exists()
             
             # Check content
             with open(str(html_file), 'r', encoding='utf-8') as f:
                 html_content = f.read()
+
+            with open(str(json_file), 'r', encoding='utf-8') as f:
+                json_content = json.load(f)
             
             # Parse HTML
             soup = BeautifulSoup(html_content, 'html.parser')
@@ -47,35 +53,34 @@ class TestRenderTable:
             # Check title
             assert soup.title.string == "SSI Generative AI Risk Register"
             
-            # Check table exists
-            table = soup.find('table')
-            assert table is not None
-            
-            # Check rows (header + 2 data rows)
-            rows = table.find_all('tr')
-            assert len(rows) == 3
-            
-            # Check first data row
-            first_data_row = rows[1]
-            cells = first_data_row.find_all('td')
-            assert cells[0].text == "Test risk"
-            assert cells[1].text == "High"
-            assert cells[2].text == "Medium"
-            assert cells[3].text == "Low"
+            # Check app shell exists
+            assert soup.find(id="register-root") is not None
+            assert soup.find(id="search-input") is not None
+            assert soup.find("script", src="./app.js") is not None
+
+            # Check JSON structure
+            assert len(json_content) == 2
+            assert json_content[0]["Risk"] == "Test risk"
+            assert json_content[0]["Likelihood"] == "High"
+            assert json_content[0]["Severity"] == "Medium"
+            assert json_content[0]["Reach"] == "Low"
+            assert json_content[0]["issue_url"].endswith("/issues/1")
+            assert json_content[1]["update_urls"][1]["label"] == "#5"
             
         finally:
             os.chdir(original_cwd)
 
     def test_render_table_with_newlines(self, tmp_path):
         # Create CSV with newlines
-        csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Issue,Maintainer Notes
-"Test risk\nwith newline",High,Medium,Low,"Mitigation\ntext","Owner","Examples","#1",""
+        csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Issue,Updates,Maintainer Notes
+"Test risk\nwith newline",High,Medium,Low,"Mitigation\ntext","Owner","Examples","#1","#1",""
 """
         csv_file = tmp_path / "register" / "risks.csv"
         csv_file.parent.mkdir()
         csv_file.write_text(csv_content)
         
         html_file = tmp_path / "docs" / "index.html"
+        json_file = tmp_path / "docs" / "risks.json"
         
         original_cwd = os.getcwd()
         os.chdir(tmp_path)
@@ -87,10 +92,14 @@ class TestRenderTable:
             
             with open(str(html_file), 'r', encoding='utf-8') as f:
                 html_content = f.read()
+
+            with open(str(json_file), 'r', encoding='utf-8') as f:
+                json_content = json.load(f)
             
-            # Check newlines are present (may or may not be converted to <br>)
-            assert "Test risk" in html_content
-            assert "with newline" in html_content
+            # Check the app shell renders and JSON keeps the content
+            assert "register-root" in html_content
+            assert "with newline" in json_content[0]["Risk"]
+            assert json_content[0]["Mitigations"].replace("\r\n", "\n") == "Mitigation\ntext"
             
         finally:
             os.chdir(original_cwd)

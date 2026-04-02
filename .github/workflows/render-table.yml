@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - 'register/risks.csv'
+      - '.github/scripts/render_table.py'
+      - 'docs/app.js'
+      - 'docs/styles.css'
 
 jobs:
   render:

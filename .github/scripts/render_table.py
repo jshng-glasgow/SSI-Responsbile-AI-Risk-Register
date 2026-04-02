@@ -1,94 +1,133 @@
-if __name__ == "__main__":
-    import pandas as pd
-    import os
+import json
+import os
 
-    CSV_PATH = "register/risks.csv"
-    OUTPUT_PATH = "docs/index.html"
+import pandas as pd
 
-    os.makedirs("docs", exist_ok=True)
 
-    df = pd.read_csv(CSV_PATH)
-    
-    # Convert issue numbers to hyperlinks
-    if 'Issue' in df.columns:
-        df['Issue'] = df['Issue'].apply(lambda x: f'<a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/{x[1:]}" target="_blank">{x}</a>' if pd.notna(x) and x.startswith('#') else x)
-    
-    # Convert update issue numbers to hyperlinks
-    if 'Updates' in df.columns:
-        def make_update_links(updates_str):
-            if pd.isna(updates_str) or not updates_str:
-                return updates_str
-            issues = [s.strip() for s in updates_str.split(',')]
-            links = []
-            for issue in issues:
-                if issue.startswith('#'):
-                    num = issue[1:]
-                    link = f'<a href="https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/{num}" target="_blank">{issue}</a>'
-                    links.append(link)
-                else:
-                    links.append(issue)
-            return ', '.join(links)
-        df['Updates'] = df['Updates'].apply(make_update_links)
-    
-    # Convert newlines to HTML line breaks
-    try:
-        df = df.apply(lambda col: col.str.replace('\n', '<br>', regex=False))
-    except AttributeError:
-        # If there are non-string columns, ignore them
-        pass
+CSV_PATH = "register/risks.csv"
+DOCS_DIR = "docs"
+HTML_PATH = os.path.join(DOCS_DIR, "index.html")
+JSON_PATH = os.path.join(DOCS_DIR, "risks.json")
 
-    #html_table = df.to_html(index=False, classes='risk-table', escape=False)
 
-    html = f"""<!DOCTYPE html>
+HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSI Generative AI Risk Register</title>
-    <style>
-        body {{
-            font-family: sans-serif;
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            color: #333;
-        }}
-        table {{
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }}
-        th {{
-            background-color: #2c3e50;
-            color: white;
-            padding: 10px;
-            text-align: left;
-        }}
-        td {{
-            padding: 10px;
-            border: 1px solid #ddd;
-            vertical-align: top;
-            white-space: normal;
-            word-wrap: break-word;
-        }}
-        tr:nth-child(even) {{
-            background-color: #f9f9f9;
-        }}
-        .high {{ color: #c0392b; font-weight: bold; }}
-        .medium {{ color: #e67e22; font-weight: bold; }}
-        .low {{ color: #27ae60; font-weight: bold; }}
-        .unknown {{ color: #7f8c8d; font-weight: bold; }}
-    </style>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <h1>SSI Generative AI Risk Register</h1>
-    <p>A community-maintained register of risks associated with the use of AI in Research Software Engineering.
-    Contribute via <a href="https://github.com/jshng-glasgow/SSI-Responsible-AI-Risk-Register/">GitHub</a>.</p>
-    {df.to_html(index=False, classes='risk-table', escape=False)}
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">Software Sustainability Institute</p>
+            <h1>Generative AI Risk Register</h1>
+            <p class="intro">
+                A community-maintained register of risks associated with AI in Research Software Engineering.
+                Browse, search, sort, and filter the current register below.
+            </p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="https://github.com/jshng-glasgow/SSI-Responsible-AI-Risk-Register/" target="_blank" rel="noreferrer">Contribute on GitHub</a>
+                <a class="button button-secondary" href="./risks.json" target="_blank" rel="noreferrer">Download JSON</a>
+            </div>
+        </section>
+
+        <section class="controls-panel" aria-label="Register controls">
+            <div class="control">
+                <label for="search-input">Search</label>
+                <input id="search-input" type="search" placeholder="Search risks, mitigations, ownership, examples..." />
+            </div>
+            <div class="control">
+                <label for="likelihood-filter">Likelihood</label>
+                <select id="likelihood-filter">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="control">
+                <label for="severity-filter">Severity</label>
+                <select id="severity-filter">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="control">
+                <label for="reach-filter">Reach</label>
+                <select id="reach-filter">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="control">
+                <label for="sort-select">Sort by</label>
+                <select id="sort-select">
+                    <option value="risk-asc">Risk (A-Z)</option>
+                    <option value="likelihood-desc">Likelihood (highest first)</option>
+                    <option value="severity-desc">Severity (highest first)</option>
+                    <option value="reach-desc">Reach (highest first)</option>
+                    <option value="issue-desc">Most recent issue</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="results-bar" aria-live="polite">
+            <p id="results-summary">Loading register...</p>
+        </section>
+
+        <section id="register-root" class="register-root" aria-live="polite"></section>
+    </main>
+
+    <template id="risk-card-template">
+        <article class="risk-card">
+            <div class="card-header">
+                <div class="card-meta"></div>
+                <h2 class="card-title"></h2>
+            </div>
+            <dl class="card-grid"></dl>
+        </article>
+    </template>
+
+    <script src="./app.js"></script>
 </body>
-</html>"""
+</html>
+"""
 
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        f.write(html)
 
-    print(f"Generated {OUTPUT_PATH}")
+def build_issue_url(issue_ref):
+    if not issue_ref or not isinstance(issue_ref, str) or not issue_ref.startswith("#"):
+        return None
+    return f"https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/{issue_ref[1:]}"
+
+
+def normalise_text(value):
+    if pd.isna(value):
+        return ""
+    return str(value)
+
+
+def serialise_records(dataframe):
+    records = []
+    for row in dataframe.to_dict(orient="records"):
+        clean_row = {key: normalise_text(value) for key, value in row.items()}
+        clean_row["issue_url"] = build_issue_url(clean_row.get("Issue", ""))
+        clean_row["update_refs"] = [ref.strip() for ref in clean_row.get("Updates", "").split(",") if ref.strip()]
+        clean_row["update_urls"] = [
+            {"label": ref, "url": build_issue_url(ref)}
+            for ref in clean_row["update_refs"]
+        ]
+        records.append(clean_row)
+    return records
+
+
+if __name__ == "__main__":
+    os.makedirs(DOCS_DIR, exist_ok=True)
+
+    dataframe = pd.read_csv(CSV_PATH).fillna("")
+    records = serialise_records(dataframe)
+
+    with open(JSON_PATH, "w", encoding="utf-8") as json_file:
+        json.dump(records, json_file, indent=2, ensure_ascii=False)
+
+    with open(HTML_PATH, "w", encoding="utf-8") as html_file:
+        html_file.write(HTML_TEMPLATE)
+
+    print(f"Generated {HTML_PATH}")
+    print(f"Generated {JSON_PATH}")
