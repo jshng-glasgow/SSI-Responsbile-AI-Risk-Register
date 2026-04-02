@@ -20,6 +20,9 @@ High
 ### Severity
 Medium
 
+### Reach
+Low
+
 ### Mitigations
 Some mitigations
 
@@ -33,6 +36,7 @@ Test examples
         assert values["Risk"] == "Test risk description"
         assert values["Likelihood"] == "High"
         assert values["Severity"] == "Medium"
+        assert values["Reach"] == "Low"
         assert values["Mitigations"] == "Some mitigations"
         assert values["Ownership"] == "Test owner"
         assert values["Examples"] == "Test examples"
@@ -47,6 +51,9 @@ _No response_
 ### Severity
 Medium
 
+### Reach
+Unknown
+
 ### Mitigations
 
 
@@ -60,6 +67,7 @@ Examples
         assert values["Risk"] == "Test risk"
         assert values["Likelihood"] == ""
         assert values["Severity"] == "Medium"
+        assert values["Reach"] == "Unknown"
         assert values["Mitigations"] == ""
         assert values["Ownership"] == ""
         assert values["Examples"] == "Examples"
@@ -75,6 +83,7 @@ Examples
                 "Risk": "Test risk",
                 "Likelihood": "High",
                 "Severity": "Medium",
+                "Reach": "Low",
                 "Mitigations": "Mitigations",
                 "Ownership": "Owner",
                 "Examples": "Examples"
@@ -87,6 +96,8 @@ Examples
             assert df.iloc[0]["Risk"] == "Test risk"
             assert df.iloc[0]["Issue"] == "#123"
             assert df.iloc[0]["Updates"] == "#123"
+            assert df.iloc[0]["Reach"] == "Low"
+            assert pd.isna(df.iloc[0]["Maintainer Notes"]) or df.iloc[0]["Maintainer Notes"] == ""
 
     def test_append_to_csv_existing_file(self, tmp_path):
         test_csv = tmp_path / "risks.csv"
@@ -95,11 +106,13 @@ Examples
             "Risk": ["Existing risk"],
             "Likelihood": ["Low"],
             "Severity": ["High"],
+            "Reach": ["Medium"],
             "Mitigations": ["Existing mitigations"],
             "Ownership": ["Existing owner"],
             "Examples": ["Existing examples"],
             "Issue": ["#1"],
-            "Updates": ["#1"]
+            "Updates": ["#1"],
+            "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
         
@@ -108,6 +121,7 @@ Examples
                 "Risk": "New risk",
                 "Likelihood": "High",
                 "Severity": "Medium",
+                "Reach": "Very High",
                 "Mitigations": "New mitigations",
                 "Ownership": "New owner",
                 "Examples": "New examples"
@@ -119,3 +133,5 @@ Examples
             assert df.iloc[1]["Risk"] == "New risk"
             assert df.iloc[1]["Issue"] == "#124"
             assert df.iloc[1]["Updates"] == "#124"
+            assert df.iloc[1]["Reach"] == "Very High"
+            assert pd.isna(df.iloc[1]["Maintainer Notes"]) or df.iloc[1]["Maintainer Notes"] == ""

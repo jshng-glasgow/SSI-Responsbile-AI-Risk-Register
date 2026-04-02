@@ -13,7 +13,7 @@ body:
     id: likelihood
     attributes:
       label: Likelihood
-      options: [Low, Medium, High, Unknown]
+      options: [Very Low, Low, Medium, High, Very High, Unknown]
       description: How likely is the risk to occur?
     validations:
       required: true
@@ -21,8 +21,16 @@ body:
     id: severity
     attributes:
       label: Severity
-      options: [Low, Medium, High, Unknown]
+      options: [Very Low, Low, Medium, High, Very High, Unknown]
       description: If the risk occurs, how severe would the impact be?
+    validations:
+      required: true
+  - type: dropdown
+    id: reach
+    attributes:
+      label: Reach
+      options: [Very Low, Low, Medium, High, Very High, Unknown]
+      description: How widely would the effects of this risk be felt?
     validations:
       required: true
   - type: textarea

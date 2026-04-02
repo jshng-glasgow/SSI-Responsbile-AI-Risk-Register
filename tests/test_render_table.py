@@ -13,9 +13,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.github', 'scr
 class TestRenderTable:
     def test_render_table_creates_html(self, tmp_path):
         # Create a test CSV
-        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue
-"Test risk",High,Medium,"Mitigation text","Owner","Examples","#1"
-"Another risk",Low,High,"Another mitigation","Another owner","Another examples","#2"
+        csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Issue,Maintainer Notes
+"Test risk",High,Medium,Low,"Mitigation text","Owner","Examples","#1",""
+"Another risk",Low,High,Very High,"Another mitigation","Another owner","Another examples","#2","Synthesised from issues #2 and #5"
 """
         csv_file = tmp_path / "register" / "risks.csv"
         csv_file.parent.mkdir()
@@ -61,14 +61,15 @@ class TestRenderTable:
             assert cells[0].text == "Test risk"
             assert cells[1].text == "High"
             assert cells[2].text == "Medium"
+            assert cells[3].text == "Low"
             
         finally:
             os.chdir(original_cwd)
 
     def test_render_table_with_newlines(self, tmp_path):
         # Create CSV with newlines
-        csv_content = """Risk,Likelihood,Severity,Mitigations,Ownership,Examples,Issue
-"Test risk\nwith newline",High,Medium,"Mitigation\ntext","Owner","Examples","#1"
+        csv_content = """Risk,Likelihood,Severity,Reach,Mitigations,Ownership,Examples,Issue,Maintainer Notes
+"Test risk\nwith newline",High,Medium,Low,"Mitigation\ntext","Owner","Examples","#1",""
 """
         csv_file = tmp_path / "register" / "risks.csv"
         csv_file.parent.mkdir()

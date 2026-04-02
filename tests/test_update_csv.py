@@ -23,6 +23,9 @@ High
 ### Severity
 Medium
 
+### Reach
+Low
+
 ### Mitigations
 Updated mitigations
 
@@ -37,6 +40,7 @@ Updated examples
         assert values["Risk"] == "Updated risk description"
         assert values["Likelihood"] == "High"
         assert values["Severity"] == "Medium"
+        assert values["Reach"] == "Low"
         assert values["Mitigations"] == "Updated mitigations"
         assert values["Ownership"] == "Updated owner"
         assert values["Examples"] == "Updated examples"
@@ -54,6 +58,9 @@ None
 ### Severity
 _No response_
 
+### Reach
+No changes
+
 ### Mitigations
 
 ### Ownership
@@ -67,6 +74,7 @@ Examples
         assert values["Risk"] == "Updated risk"
         assert values["Likelihood"] is None
         assert values["Severity"] is None
+        assert values["Reach"] is None
         assert values["Mitigations"] is None
         assert values["Ownership"] is None
         assert values["Examples"] == "Examples"
@@ -78,11 +86,13 @@ Examples
             "Risk": ["Original risk"],
             "Likelihood": ["Low"],
             "Severity": ["High"],
+            "Reach": ["Medium"],
             "Mitigations": ["Original mitigations"],
             "Ownership": ["Original owner"],
             "Examples": ["Original examples"],
             "Issue": ["#123"],
-            "Updates": ["#123"]
+            "Updates": ["#123"],
+            "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
         
@@ -92,6 +102,7 @@ Examples
                 "Risk": "Updated risk",
                 "Likelihood": None,  # Should not update
                 "Severity": "Medium",  # Should update
+                "Reach": "Very High",  # Should update
                 "Mitigations": None,
                 "Ownership": "Updated owner",
                 "Examples": None
@@ -103,9 +114,11 @@ Examples
             assert df.iloc[0]["Risk"] == "Updated risk"
             assert df.iloc[0]["Likelihood"] == "Low"  # Unchanged
             assert df.iloc[0]["Severity"] == "Medium"  # Updated
+            assert df.iloc[0]["Reach"] == "Very High"  # Updated
             assert df.iloc[0]["Mitigations"] == "Original mitigations"  # Unchanged
             assert df.iloc[0]["Ownership"] == "Updated owner"  # Updated
             assert df.iloc[0]["Examples"] == "Original examples"  # Unchanged
+            assert pd.isna(df.iloc[0]["Maintainer Notes"]) or df.iloc[0]["Maintainer Notes"] == ""
             # Updates should have the update issue appended
             assert "#999" in str(df.iloc[0]["Updates"])
 
@@ -116,11 +129,13 @@ Examples
             "Risk": ["Original risk"],
             "Likelihood": ["Low"],
             "Severity": ["High"],
+            "Reach": ["Medium"],
             "Mitigations": ["Original mitigations"],
             "Ownership": ["Original owner"],
             "Examples": ["Original examples"],
             "Issue": ["#123"],
-            "Updates": ["#123"]
+            "Updates": ["#123"],
+            "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
         
@@ -151,11 +166,13 @@ Examples
             "Risk": ["Original risk"],
             "Likelihood": ["Low"],
             "Severity": ["High"],
+            "Reach": ["Medium"],
             "Mitigations": ["Original mitigations"],
             "Ownership": ["Original owner"],
             "Examples": [None],  # NaN column
             "Issue": ["#123"],
-            "Updates": ["#123"]
+            "Updates": ["#123"],
+            "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
         
@@ -165,6 +182,7 @@ Examples
                 "Risk": None,
                 "Likelihood": None,
                 "Severity": None,
+                "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
                 "Examples": "https://example.com/skills"  # Adding string to NaN column
@@ -184,11 +202,13 @@ Examples
             "Risk": ["Test risk"],
             "Likelihood": ["High"],
             "Severity": ["Medium"],
+            "Reach": ["Low"],
             "Mitigations": ["Initial mitigations"],
             "Ownership": ["Owner"],
             "Examples": ["Example"],
             "Issue": ["#50"],
-            "Updates": ["#50"]
+            "Updates": ["#50"],
+            "Maintainer Notes": [""]
         })
         existing_df.to_csv(str(test_csv), index=False)
         
@@ -199,6 +219,7 @@ Examples
                 "Risk": "Test risk updated",
                 "Likelihood": None,
                 "Severity": None,
+                "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
                 "Examples": None
@@ -211,6 +232,7 @@ Examples
                 "Risk": "Test risk updated again",
                 "Likelihood": None,
                 "Severity": None,
+                "Reach": None,
                 "Mitigations": None,
                 "Ownership": None,
                 "Examples": None

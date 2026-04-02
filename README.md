@@ -27,23 +27,41 @@ The live register can be viewed [here](https://jshng-glasgow.github.io/SSI-Respo
 
 ### Fields
 
-The register has six editable fields. Please be as descriptive as possible when filling in the fields. An explanation of each field is given below.
+The register contains:
+
+* Seven contributor-editable fields, which can be proposed through the contribution routes described above.
+* One maintainer-only field, **Maintainer Notes**, which is used to document editorial decisions and is not submitted through the public issue templates.
+
+Please be as descriptive as possible when filling in the contributor-editable fields. An explanation of each field is given below.
 
 **Risk**: A description of the nature of the risk — who does it affect? What are the potential outcomes?
 
-**Likelihood**: Choice of *Low*, *Medium*, *High*, or *Unknown*.
+**Likelihood**: Choice of *Very Low*, *Low*, *Medium*, *High*, *Very High*, or *Unknown*.
 
+* *Very Low* -- Highly unlikely to occur in normal RSE practice, even in the long term.
 * *Low* -- Unlikely to occur in normal RSE practice, even in the long term.
 * *Medium* -- Plausible and has been observed in similar contexts, or likely to be an issue in the near future.
 * *High* -- Commonly encountered or well-documented. A current and existing issue.
+* *Very High* -- Extremely likely, pervasive, or already difficult to avoid in current practice.
 * *Unknown* -- Evidence is lacking or highly contested.
 
-**Severity**: Choice of *Low*, *Medium*, *High*, or *Unknown*.
+**Severity**: Choice of *Very Low*, *Low*, *Medium*, *High*, *Very High*, or *Unknown*.
 
+* *Very Low* -- Minimal impact and easily remedied. Little or no lasting effect on outputs or individuals.
 * *Low* -- Minor inconvenience or easily remedied. Limited impact on research outputs or individuals.
 * *Medium* -- Meaningful impact on research quality, professional practice, or individuals. Recoverable but non-trivial.
 * *High* -- Significant harm to research integrity, individuals, or communities. Potentially irreversible.
+* *Very High* -- Severe or systemic harm with major consequences for research integrity, people, or communities.
 * *Unknown* -- Severity is highly context-dependent or insufficient evidence exists to assess.
+
+**Reach**: Choice of *Very Low*, *Low*, *Medium*, *High*, *Very High*, or *Unknown*.
+
+* *Very Low* -- The impact is very narrow, affecting only an individual task, person, or isolated activity.
+* *Low* -- The impact affects a small number of people or a single project/team.
+* *Medium* -- The impact affects several people, projects, or teams in a contained but meaningful way.
+* *High* -- The impact is broad, affecting a department, institution, or substantial part of the RSE community.
+* *Very High* -- The impact is systemic or widely felt across multiple institutions, communities, or the wider research ecosystem.
+* *Unknown* -- The available evidence is insufficient to assess how widely the impact would spread.
 
 **Mitigations**: (Optional) Any potential ways in which the risk might be mitigated, either through changing RSE practice, institutional policy, or other means.
 
@@ -52,6 +70,10 @@ The register has six editable fields. Please be as descriptive as possible when 
 **Examples**: (Optional) Are there any examples of where this risk has been managed elsewhere? Please provide any relevant links or evidence if available.
 
 **Issue**: (Not editable) A unique identifier for the risk, which can be used to reference it when submitting updates.
+
+**Maintainer Notes**: (Maintainer only) Editorial notes used to record synthesis decisions, conflicting assessments, and links back to related issues when multiple submissions are combined.
+
+This field is intended to help maintainers preserve provenance when risks are merged or revised. For example, it may be used to note that an entry was synthesised from multiple issues, that contributors disagreed on severity or likelihood, or that a conservative editorial judgement was applied when combining overlapping submissions.
 
 ## Governance
 

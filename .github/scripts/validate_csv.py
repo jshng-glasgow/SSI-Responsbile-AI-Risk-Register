@@ -1,8 +1,8 @@
 import pandas as pd
 import sys
 
-REQUIRED_COLUMNS = ["Risk", "Likelihood", "Severity", "Mitigations", "Ownership", "Examples", "Issue", "Updates"]
-VALID_LEVELS = {"Low", "Medium", "High", "Unknown"}
+REQUIRED_COLUMNS = ["Risk", "Likelihood", "Severity", "Reach", "Mitigations", "Ownership", "Examples", "Issue", "Updates", "Maintainer Notes"]
+VALID_LEVELS = {"Very Low", "Low", "Medium", "High", "Very High", "Unknown"}
 
 def validate():
     errors = []
@@ -19,16 +19,18 @@ def validate():
         errors.append(f"Missing columns: {missing}")
 
     # Check required fields aren't empty
-    for col in ["Risk", "Likelihood", "Severity"]:
+    for col in ["Risk", "Likelihood", "Severity", "Reach"]:
         if col in df.columns and df[col].isnull().any():
             errors.append(f"Column '{col}' has empty values")
 
-    # Check likelihood and severity are valid
-    for col in ["Likelihood", "Severity"]:
+    # Check categorical fields are valid
+    for col in ["Likelihood", "Severity", "Reach"]:
         if col in df.columns:
             invalid = df[~df[col].isin(VALID_LEVELS)][col].unique()
             if len(invalid) > 0:
-                errors.append(f"Invalid values in '{col}': {invalid}. Must be Low, Medium, High, or Unknown.")
+                errors.append(
+                    f"Invalid values in '{col}': {invalid}. Must be Very Low, Low, Medium, High, Very High, or Unknown."
+                )
 
     if errors:
         print("Validation failed:")

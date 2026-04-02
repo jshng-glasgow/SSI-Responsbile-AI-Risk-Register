@@ -3,7 +3,7 @@ import os
 import re
 import sys
 
-FIELDS = ["Issue Number","Risk", "Likelihood", "Severity", "Mitigations", "Ownership", "Examples"]
+FIELDS = ["Issue Number","Risk", "Likelihood", "Severity", "Reach", "Mitigations", "Ownership", "Examples"]
 CSV_PATH = "register/risks.csv"
 
 def parse_issue(body):
