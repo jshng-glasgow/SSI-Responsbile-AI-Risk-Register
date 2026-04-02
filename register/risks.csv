@@ -7,3 +7,4 @@ Testing new fields,High,Very High,Medium,This can be mitigated by...,Owned by th
 Adding new risk to test front end.,Very Low,Very Low,Very Low,,,,Economic,#135,#135,
 This risk will be tagged,Very Low,Very Low,Very Low,,,,,#137,#137,
 This risk has some tags!,Very Low,Very Low,Very Low,,,,"Societal, Professional, Economic, Governance",#140,"#140, #142",
+This risk has non-default tags,Very Low,Very Low,Very Low,,,,"Societal, Research Integrity, Epistemic, Ethical, Equity",#144,#144,
