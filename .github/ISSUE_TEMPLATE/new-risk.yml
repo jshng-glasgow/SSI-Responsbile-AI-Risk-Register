@@ -48,3 +48,25 @@ body:
     attributes:
       label: Examples
       description: Provide relevant examples of best practice, or policies from institutions or organisations that have identified this risk and how to manage it. Include links where possible.
+  - type: dropdown
+    id: tags
+    attributes:
+      label: Tags
+      description: Select any tags that apply to this risk
+      multiple: true
+      options:
+        - Economic
+        - Environmental
+        - Professional
+        - Training and Development
+        - Research Integrity
+        - Privacy and Security
+        - Equity
+        - Societal
+        - Governance
+        - Software Sustainability
+  - type: textarea
+    id: other_tags
+    attributes:
+      label: Other Tags
+      description: If needed, add any other tags not listed above. Separate multiple entries with commas.

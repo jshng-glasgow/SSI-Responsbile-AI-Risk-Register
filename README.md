@@ -29,7 +29,7 @@ The live register can be viewed [here](https://jshng-glasgow.github.io/SSI-Respo
 
 The register contains:
 
-* Seven contributor-editable fields, which can be proposed through the contribution routes described above.
+* Eight contributor-editable fields, which can be proposed through the contribution routes described above.
 * One maintainer-only field, **Maintainer Notes**, which is used to document editorial decisions and is not submitted through the public issue templates.
 
 Please be as descriptive as possible when filling in the contributor-editable fields. An explanation of each field is given below.
@@ -68,6 +68,21 @@ Please be as descriptive as possible when filling in the contributor-editable fi
 **Ownership**: (Optional) Who is responsible for addressing this risk? This might be practitioners, institutions, funders, government, or tool developers. It might be multiple people or groups.
 
 **Examples**: (Optional) Are there any examples of where this risk has been managed elsewhere? Please provide any relevant links or evidence if available.
+
+**Tags**: (Optional) Short category labels used to group similar risks in the public register. Contributors can select as many tags as are useful and may also suggest additional tags using the free-text `Other Tags` field in the issue form.
+
+The current standard tags are:
+
+* **Economic**: Risks relating to cost, resourcing, procurement, funding, or wider economic impacts of AI-led development.
+* **Environmental**: Risks relating to energy use, emissions, water consumption, resource extraction, or other environmental harms.
+* **Professional**: Risks affecting the role, identity, autonomy, recognition, or working conditions of RSEs and related professionals.
+* **Training and Development**: Risks relating to skills erosion, learning pathways, mentoring, onboarding, or the development of future capability.
+* **Research Integrity**: Risks to the correctness, reproducibility, provenance, transparency, or reliability of research software and outputs.
+* **Privacy and Security**: Risks involving confidential data, sensitive code, insecure generated software, access control, or other privacy and security harms.
+* **Equity**: Risks that create or worsen exclusion, unequal access, unfair burden, or biased outcomes across individuals or groups.
+* **Societal**: Risks with broader consequences for communities, public trust, public institutions, or society beyond a single team or project.
+* **Governance**: Risks relating to oversight, accountability, policy, regulation, institutional processes, or decision-making responsibilities.
+* **Software Sustainability**: Risks to the long-term maintainability, supportability, portability, documentation, or resilience of research software.
 
 **Issue**: (Not editable) A unique identifier for the risk, which can be used to reference it when submitting updates.
 

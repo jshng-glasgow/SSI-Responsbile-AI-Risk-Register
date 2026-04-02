@@ -57,6 +57,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 </select>
             </div>
             <div class="control">
+                <label for="tag-filter">Tag</label>
+                <select id="tag-filter">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="control">
                 <label for="sort-select">Sort by</label>
                 <select id="sort-select">
                     <option value="risk-asc">Risk (A-Z)</option>
