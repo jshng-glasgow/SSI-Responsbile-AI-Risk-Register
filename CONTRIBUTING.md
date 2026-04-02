@@ -36,6 +36,9 @@ All contributions are reviewed by the [Responsible AI Study Group](#) before bei
 ## Maintainers
 
 - [Joseph Shingleton](https://github.com/jshng-glasgow)
+- [Philipp Boersch-Supan](https://github.com/pboesu)
+- [Batool Almarzouq](https://github.com/BatoolMM)
+- [Oscar Seip](https://github.com/OscarSeip)
 
 ## Code of Conduct
 
