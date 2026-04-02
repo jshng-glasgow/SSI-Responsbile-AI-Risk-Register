@@ -102,6 +102,38 @@
     ]
   },
   {
+    "Risk": "<<<<<<< HEAD",
+    "Likelihood": "",
+    "Severity": "",
+    "Reach": "",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "",
+    "Issue": "",
+    "Updates": "",
+    "Maintainer Notes": "",
+    "issue_url": null,
+    "update_refs": [],
+    "update_urls": []
+  },
+  {
+    "Risk": "=======",
+    "Likelihood": "",
+    "Severity": "",
+    "Reach": "",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "",
+    "Issue": "",
+    "Updates": "",
+    "Maintainer Notes": "",
+    "issue_url": null,
+    "update_refs": [],
+    "update_urls": []
+  },
+  {
     "Risk": "Adding new risk to test front end.",
     "Likelihood": "Very Low",
     "Severity": "Very Low",
@@ -201,6 +233,22 @@
     "Updates": "",
     "Maintainer Notes": "",
     "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/137",
+    "update_refs": [],
+    "update_urls": []
+  },
+  {
+    "Risk": ">>>>>>> 73dfb12f6bf350b13284fc66e8803fda7ef29514",
+    "Likelihood": "",
+    "Severity": "",
+    "Reach": "",
+    "Mitigations": "",
+    "Ownership": "",
+    "Examples": "",
+    "Tags": "",
+    "Issue": "",
+    "Updates": "",
+    "Maintainer Notes": "",
+    "issue_url": null,
     "update_refs": [],
     "update_urls": []
   }
