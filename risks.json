@@ -155,18 +155,23 @@
     "Mitigations": "",
     "Ownership": "",
     "Examples": "",
-    "Tags": "Professional, Societal, Research Integrity",
+    "Tags": "Societal, Professional, Economic, Governance",
     "Issue": "#140",
-    "Updates": "#140",
+    "Updates": "#140, #142",
     "Maintainer Notes": "",
     "issue_url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/140",
     "update_refs": [
-      "#140"
+      "#140",
+      "#142"
     ],
     "update_urls": [
       {
         "label": "#140",
         "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/140"
+      },
+      {
+        "label": "#142",
+        "url": "https://github.com/jshng-glasgow/SSI-Responsbile-AI-Risk-Register/issues/142"
       }
     ]
   }
